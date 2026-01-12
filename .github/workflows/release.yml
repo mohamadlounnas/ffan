@@ -42,10 +42,7 @@ jobs:
             -scheme fan \
             -configuration Release \
             -derivedDataPath build \
-            clean build \
-            CODE_SIGN_IDENTITY="" \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO
+            clean build
           
           # The app is built to a predictable location
           BUILT_APP="build/Build/Products/Release/fan.app"
@@ -63,10 +60,13 @@ jobs:
           mkdir -p release
           cp -R "$BUILT_APP" release/ffan.app
       
-      - name: 🔓 Remove code signature
+      - name: � Sign Application
         run: |
-          echo "🔓 Removing code signature for broader compatibility..."
-          codesign --remove-signature release/ffan.app 2>/dev/null || true
+          echo "🔐 Ad-hoc signing app for macOS Apple Silicon support..."
+          # Ensure executable permission
+          chmod +x release/ffan.app/Contents/MacOS/*
+          # Ad-hoc sign to allow running on ARM64
+          codesign --force --deep --options runtime --sign - release/ffan.app
       
       - name: 📦 Create ZIP archive
         run: |
@@ -80,11 +80,19 @@ jobs:
           echo "📦 Archive created:"
           ls -lh ffan-v${{ steps.version.outputs.version }}-macos.zip
       
-      - name: 💿 Create DMG (optional)
+      - name: 💿 Create DMG with Shortcut
         run: |
-          echo "💿 Creating DMG..."
+          echo "💿 Creating DMG with Applications shortcut..."
+          # Create staging directory for DMG content
+          mkdir -p dmg_source
+          cp -R release/ffan.app dmg_source/
+          
+          # Create symlink to Applications
+          ln -s /Applications dmg_source/Applications
+          
+          # Create DMG from staging directory
           hdiutil create -volname "ffan" \
-            -srcfolder release/ffan.app \
+            -srcfolder dmg_source \
             -ov -format UDZO \
             ffan-v${{ steps.version.outputs.version }}-macos.dmg
           

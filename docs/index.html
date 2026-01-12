@@ -3,566 +3,375 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ffan - Elegant macOS fan control application with real-time temperature monitoring">
-    <meta name="keywords" content="macOS, fan control, temperature monitor, menu bar, Mac app">
-    <title>ffan - macOS Fan Control</title>
+    <meta name="description" content="ffan - Native macOS fan control utility">
+    <title>ffan - Master your Thermals</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         :root {
-            --primary: #007AFF;
-            --secondary: #5856D6;
-            --success: #34C759;
-            --warning: #FF9500;
-            --danger: #FF3B30;
-            --background: #F5F5F7;
+            --bg: #FAFAFA;
             --surface: #FFFFFF;
-            --text-primary: #1D1D1F;
-            --text-secondary: #6E6E73;
-            --border: #D2D2D7;
-            --shadow: rgba(0, 0, 0, 0.08);
+            --surface-hover: #F2F2F7;
+            --text: #1D1D1F;
+            --text-secondary: #86868B;
+            --accent: #0071E3;
+            --accent-hover: #0077ED;
+            --border: #E5E5EA;
+            --radius-l: 24px;
+            --radius-m: 16px;
+            --radius-s: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
-                --background: #000000;
+                --bg: #000000;
                 --surface: #1C1C1E;
-                --text-primary: #F5F5F7;
-                --text-secondary: #8E8E93;
+                --surface-hover: #2C2C2E;
+                --text: #F5F5F7;
+                --text-secondary: #86868B;
+                --accent: #2997FF;
+                --accent-hover: #0071E3;
                 --border: #38383A;
-                --shadow: rgba(255, 255, 255, 0.05);
             }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
-            background: var(--background);
-            color: var(--text-primary);
-            line-height: 1.6;
+            font-family: var(--font-stack);
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
             overflow-x: hidden;
         }
 
+        a { text-decoration: none; color: inherit; }
+        button { border: none; background: none; font-family: inherit; cursor: pointer; }
+
         .container {
-            max-width: 980px;
+            max-width: 1080px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 24px;
         }
 
-        /* Header */
-        header {
-            padding: 20px 0;
-            backdrop-filter: blur(20px);
-            background: rgba(255, 255, 255, 0.8);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid var(--border);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            header {
-                background: rgba(0, 0, 0, 0.8);
-            }
-        }
-
+        /* Nav */
         nav {
+            padding: 24px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 60px;
         }
 
-        .logo {
-            font-size: 28px;
-            font-weight: 600;
-            color: var(--text-primary);
-            text-decoration: none;
-            letter-spacing: -0.5px;
+        .brand {
+            font-weight: 700;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .nav-links {
             display: flex;
-            gap: 30px;
-            list-style: none;
+            gap: 24px;
         }
 
         .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
             font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
             transition: color 0.2s;
         }
 
         .nav-links a:hover {
-            color: var(--text-primary);
+            color: var(--text);
         }
 
         /* Hero */
         .hero {
             text-align: center;
-            padding: 80px 0 60px;
+            max-width: 700px;
+            margin: 0 auto 100px;
         }
 
-        .hero h1 {
-            font-size: 56px;
+        .pill {
+            display: inline-block;
+            padding: 6px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 32px;
+        }
+
+        h1 {
+            font-size: 64px;
             font-weight: 700;
-            letter-spacing: -1.5px;
-            margin-bottom: 16px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            background: linear-gradient(180deg, var(--text) 0%, rgba(var(--text), 0.8) 100%);
         }
 
         .hero p {
             font-size: 24px;
             color: var(--text-secondary);
-            margin-bottom: 40px;
             font-weight: 400;
+            margin-bottom: 40px;
+            letter-spacing: -0.5px;
         }
 
-        .cta-buttons {
+        .button-group {
             display: flex;
             gap: 16px;
             justify-content: center;
-            flex-wrap: wrap;
         }
 
         .btn {
+            height: 48px;
+            padding: 0 32px;
+            border-radius: 99px;
+            font-weight: 600;
+            font-size: 16px;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 14px 32px;
-            border-radius: 980px;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: 500;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: none;
-            cursor: pointer;
+            justify-content: center;
+            transition: transform 0.2s, background-color 0.2s;
         }
 
         .btn-primary {
-            background: var(--primary);
-            color: white;
+            background-color: var(--text);
+            color: var(--bg);
         }
 
         .btn-primary:hover {
-            background: #0051D5;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(0, 122, 255, 0.3);
+            transform: scale(1.02);
+            opacity: 0.9;
         }
 
         .btn-secondary {
-            background: var(--surface);
-            color: var(--text-primary);
-            border: 1.5px solid var(--border);
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
         }
 
         .btn-secondary:hover {
-            background: var(--background);
-            transform: translateY(-2px);
+            background-color: var(--surface-hover);
         }
 
-        /* Features */
-        .features {
-            padding: 80px 0;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 40px;
-            font-weight: 700;
-            letter-spacing: -1px;
-            margin-bottom: 60px;
-        }
-
-        .feature-grid {
+        /* Bento Grid */
+        .bento-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, minmax(280px, auto));
             gap: 24px;
-            margin-bottom: 40px;
+            margin-bottom: 120px;
         }
 
-        .feature-card {
+        .card {
             background: var(--surface);
+            border-radius: var(--radius-l);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 32px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.3s ease;
         }
 
-        .feature-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 32px var(--shadow);
-        }
+        .card:hover { transform: translateY(-4px); }
 
-        .feature-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
+        .card-icon {
+            font-size: 32px;
+            margin-bottom: 24px;
             display: block;
         }
 
-        .feature-card h3 {
-            font-size: 22px;
+        .card h3 {
+            font-size: 24px;
             font-weight: 600;
             margin-bottom: 12px;
             letter-spacing: -0.5px;
         }
 
-        .feature-card p {
-            color: var(--text-secondary);
+        .card p {
             font-size: 16px;
-            line-height: 1.5;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Grid Spans */
+        .span-2 { grid-column: span 2; }
+        .span-row-2 { grid-row: span 2; }
+
+        @media (max-width: 900px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+            }
+            .span-2, .span-row-2 { grid-column: auto; grid-row: auto; }
+            h1 { font-size: 48px; }
         }
 
         /* Installation */
-        .installation {
-            padding: 80px 0;
+        .install-section {
             background: var(--surface);
-            border-radius: 24px;
-            margin: 40px 0;
-        }
-
-        .code-block {
-            background: var(--background);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 24px;
-            margin: 20px 0;
-            font-family: 'SF Mono', Monaco, monospace;
-            font-size: 14px;
-            overflow-x: auto;
-            position: relative;
+            border-radius: var(--radius-l);
+            padding: 60px;
+            text-align: center;
+            margin-bottom: 120px;
         }
 
-        .code-block code {
-            color: var(--primary);
+        .terminal {
+            background: #1C1C1E;
+            border-radius: var(--radius-m);
+            padding: 24px;
+            text-align: left;
+            font-family: 'SF Mono', 'Menlo', monospace;
+            font-size: 13px;
+            color: #fff;
+            margin-top: 32px;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
+
+        .terminal-header {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .red { background: #FF5F56; }
+        .yellow { background: #FFBD2E; }
+        .green { background: #27C93F; }
+
+        .cmd { color: #fff; line-height: 1.8; }
+        .cmd::before { content: "$"; color: #6E6E73; margin-right: 12px; }
+        .comment { color: #6E6E73; display: block; margin-top: 12px; margin-bottom: 4px; }
 
         .copy-btn {
             position: absolute;
-            top: 12px;
-            right: 12px;
-            padding: 8px 16px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            top: 16px;
+            right: 16px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+            padding: 4px 12px;
+            color: #fff;
             font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
+            transition: background 0.2s;
         }
-
-        .copy-btn:hover {
-            background: var(--background);
-        }
-
-        /* Requirements */
-        .requirements {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin: 40px 0;
-        }
-
-        .requirement {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .requirement-icon {
-            font-size: 32px;
-            margin-bottom: 8px;
-        }
-
-        .requirement-text {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
+        .copy-btn:hover { background: rgba(255,255,255,0.2); }
 
         /* Footer */
         footer {
-            padding: 60px 0 40px;
             border-top: 1px solid var(--border);
-            margin-top: 80px;
-        }
-
-        .footer-content {
+            padding: 60px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 24px;
-            list-style: none;
-        }
-
-        .footer-links a {
             color: var(--text-secondary);
-            text-decoration: none;
             font-size: 14px;
-            transition: color 0.2s;
         }
-
-        .footer-links a:hover {
-            color: var(--text-primary);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 16px;
-        }
-
-        .social-links a {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 50%;
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: all 0.2s;
-        }
-
-        .social-links a:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        /* Badge */
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 12px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--text-secondary);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 40px;
-            }
-
-            .hero p {
-                font-size: 20px;
-            }
-
-            .section-title {
-                font-size: 32px;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .footer-content {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .fade-in {
-            animation: fadeInUp 0.6s ease-out;
-        }
+        
     </style>
 </head>
 <body>
-    <header>
-        <nav class="container">
-            <a href="#" class="logo">🌬️ ffan</a>
-            <ul class="nav-links">
-                <li><a href="#features">Features</a></li>
-                <li><a href="#installation">Installation</a></li>
-                <li><a href="https://github.com/mohamadlounnas/ffan/blob/main/docs/README.md">Docs</a></li>
-                <li><a href="https://github.com/mohamadlounnas/ffan">GitHub</a></li>
-            </ul>
+
+    <div class="container">
+        <nav>
+            <div class="brand">
+                <span>⚡️</span> ffan
+            </div>
+            <div class="nav-links">
+                <a href="https://github.com/mohamadlounnas/ffan/blob/main/docs/README.md">Documentation</a>
+                <a href="https://github.com/mohamadlounnas/ffan">GitHub</a>
+            </div>
         </nav>
-    </header>
 
-    <main>
-        <section class="hero container fade-in">
-            <div class="badge">
-                <span>🎉</span>
-                <span>Now Available for macOS</span>
-            </div>
-            <h1>Control Your Mac's<br>Temperature</h1>
-            <p>Elegant fan control with real-time monitoring</p>
-            <div class="cta-buttons">
-                <a href="https://github.com/mohamadlounnas/ffan/releases/latest" class="btn btn-primary">
-                    <span>⬇️</span>
-                    Download v1.0.0
-                </a>
-                <a href="https://github.com/mohamadlounnas/ffan" class="btn btn-secondary">
-                    <span>⭐</span>
-                    View on GitHub
-                </a>
+        <section class="hero">
+            <div class="pill">v1.0.0 Available</div>
+            <h1>Control your Mac’s<br>performance.</h1>
+            <p>A native, lightweight utility to monitor temperatures and control fan speeds. Built for Apple Silicon.</p>
+            <div class="button-group">
+                <a href="https://github.com/mohamadlounnas/ffan/releases/latest" class="btn btn-primary">Download Free</a>
+                <a href="https://github.com/mohamadlounnas/ffan" class="btn btn-secondary">Star on GitHub</a>
             </div>
         </section>
 
-        <section id="features" class="features container">
-            <h2 class="section-title">Powerful Features</h2>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <span class="feature-icon">🌡️</span>
-                    <h3>Temperature Monitor</h3>
-                    <p>Real-time CPU and GPU temperature readings with color-coded indicators</p>
-                </div>
-                <div class="feature-card">
-                    <span class="feature-icon">💨</span>
-                    <h3>Fan Control</h3>
-                    <p>Manual speed control or intelligent automatic temperature-based management</p>
-                </div>
-                <div class="feature-card">
-                    <span class="feature-icon">📊</span>
-                    <h3>Live Animation</h3>
-                    <p>Menu bar icon animates based on actual fan speed for instant feedback</p>
-                </div>
-                <div class="feature-card">
-                    <span class="feature-icon">🎨</span>
-                    <h3>Modern UI</h3>
-                    <p>Beautiful liquid glass design that adapts to light and dark mode</p>
-                </div>
-                <div class="feature-card">
-                    <span class="feature-icon">🚀</span>
-                    <h3>Lightweight</h3>
-                    <p>Minimal resource usage, runs silently in the menu bar</p>
-                </div>
-                <div class="feature-card">
-                    <span class="feature-icon">🔒</span>
-                    <h3>Privacy First</h3>
-                    <p>All processing happens locally, zero data collection or telemetry</p>
-                </div>
+        <section class="bento-grid">
+            <div class="card span-2">
+                <div class="card-icon">🌡️</div>
+                <h3>Precision Monitoring</h3>
+                <p>Get real-time readouts from CPU and GPU sensors. Our intelligent averaging algorithm filters out noise to give you the data that actually matters.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">⚡️</div>
+                <h3>Native SwiftUI</h3>
+                <p>Built with pure Swift using the latest Apple frameworks. It feels right at home on macOS Sequoia.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🤫</div>
+                <h3>Zero Noise</h3>
+                <p>Runs efficiently in the background using less than 15MB of RAM and 0.1% CPU.</p>
+            </div>
+            <div class="card span-2">
+                <div class="card-icon">🔒</div>
+                <h3>Privacy by Design</h3>
+                <p>No analytics. No telemetry. No internet connection required. Your system stats leave your computer.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🎛️</div>
+                <h3>Full Control</h3>
+                <p>Set custom RPM curves or manual fixed speeds to keep your machine cool under heavy load.</p>
             </div>
         </section>
 
-        <section id="installation" class="installation container">
-            <h2 class="section-title">Quick Installation</h2>
+        <section class="install-section">
+            <h2>Get Started via Terminal</h2>
+            <p style="color: var(--text-secondary); margin-top: 16px;">Prefer command line? We got you.</p>
             
-            <div class="code-block">
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                <code># Download and install<br>
-curl -L https://github.com/mohamadlounnas/ffan/releases/latest/download/ffan-v1.0.0-macos.zip -o ffan.zip<br>
-unzip ffan.zip && mv ffan.app /Applications/ && rm ffan.zip<br>
-<br>
-# Enable fan control (requires sudo)<br>
-cd /Applications/ffan.app/Contents/Resources/tools/smc-helper<br>
-sudo ./install.sh</code>
-            </div>
-
-            <h3 style="text-align: center; margin: 60px 0 30px; font-size: 24px;">System Requirements</h3>
-            <div class="requirements">
-                <div class="requirement">
-                    <div class="requirement-icon">💻</div>
-                    <div class="requirement-text"><strong>macOS 11.0+</strong><br>Big Sur or later</div>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
                 </div>
-                <div class="requirement">
-                    <div class="requirement-icon">⚡</div>
-                    <div class="requirement-text"><strong>Intel / Apple Silicon</strong><br>Universal binary</div>
-                </div>
-                <div class="requirement">
-                    <div class="requirement-icon">💾</div>
-                    <div class="requirement-text"><strong>~10MB</strong><br>Disk space</div>
-                </div>
-                <div class="requirement">
-                    <div class="requirement-icon">🔐</div>
-                    <div class="requirement-text"><strong>Admin Access</strong><br>For fan control</div>
-                </div>
+                <button class="copy-btn" onclick="copyCmd()">Copy</button>
+                <code>
+                    <span class="comment"># Download and install ffan</span>
+                    <div class="cmd">curl -L https://github.com/mohamadlounnas/ffan/releases/latest/download/ffan-v1.0.0-macos.zip -o ffan.zip</div>
+                    <div class="cmd">unzip ffan.zip && mv ffan.app /Applications/</div>
+                </code>
             </div>
         </section>
 
-        <section class="container" style="text-align: center; padding: 60px 0;">
-            <h2 class="section-title">Open Source</h2>
-            <p style="color: var(--text-secondary); font-size: 18px; margin-bottom: 30px;">
-                ffan is free and open source under MIT License<br>
-                Contributions and feedback are welcome
-            </p>
-            <div class="cta-buttons">
-                <a href="https://github.com/mohamadlounnas/ffan/blob/main/docs/README.md" class="btn btn-secondary">
-                    📚 Read Documentation
-                </a>
-                <a href="https://github.com/mohamadlounnas/ffan/issues" class="btn btn-secondary">
-                    🐛 Report Issue
-                </a>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container footer-content">
-            <div>
-                <p style="color: var(--text-secondary); font-size: 14px;">
-                    © 2026 ffan. MIT License. Made with ❤️ for Mac users.
-                </p>
-            </div>
-            <ul class="footer-links">
-                <li><a href="https://github.com/mohamadlounnas/ffan/blob/main/LICENSE">License</a></li>
-                <li><a href="https://github.com/mohamadlounnas/ffan/blob/main/docs/README.md">Documentation</a></li>
-                <li><a href="https://github.com/mohamadlounnas/ffan/releases">Releases</a></li>
-            </ul>
-            <div class="social-links">
-                <a href="https://github.com/mohamadlounnas/ffan" title="GitHub">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </footer>
+        <footer>
+            <div>© 2026 Mohammed Lounnas</div>
+            <div>MIT License • 100% Free & Open Source</div>
+        </footer>
+    </div>
 
     <script>
-        function copyCode(button) {
-            const codeBlock = button.nextElementSibling;
-            const text = codeBlock.textContent.trim();
-            navigator.clipboard.writeText(text).then(() => {
-                button.textContent = 'Copied!';
-                setTimeout(() => {
-                    button.textContent = 'Copy';
-                }, 2000);
-            });
+        function copyCmd() {
+            const cmd = `curl -L https://github.com/mohamadlounnas/ffan/releases/latest/download/ffan-v1.0.0-macos.zip -o ffan.zip
+unzip ffan.zip && mv ffan.app /Applications/`;
+            navigator.clipboard.writeText(cmd);
+            const btn = document.querySelector('.copy-btn');
+            btn.textContent = 'Copied!';
+            setTimeout(() => btn.textContent = 'Copy', 2000);
         }
-
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
     </script>
 </body>
 </html>

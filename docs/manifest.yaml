@@ -5,7 +5,7 @@ version: "1.0"
 project:
   name: "ffan"
   description: "macOS Fan Control Application"
-  repository: "https://github.com/yourusername/ffan"
+  repository: "https://github.com/mohamadlounnas/ffan"
 
 documentation:
   - file: "README.md"
@@ -22,6 +22,17 @@ documentation:
       - "Security Considerations"
       - "Contributing Guidelines"
       - "FAQ & Troubleshooting"
+    last_updated: "2026-01-12"
+
+  - file: "index.html"
+    title: "Landing Page"
+    description: "The main landing page for the project, hosted on GitHub Pages"
+    category: "general"
+    audience: ["end-users"]
+    sections:
+      - "Hero"
+      - "Features"
+      - "Installation"
     last_updated: "2026-01-12"
 
 planned:
