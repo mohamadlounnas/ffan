@@ -392,8 +392,8 @@ struct PopoverView: View {
                     LaunchAtLoginManager.shared.isEnabled = newValue
                 }
             )) {
-                Image(systemName: "power.circle")
-                    .font(.system(size: 14))
+                Text("Startup?")
+                    .font(.system(size: 11))
                     .foregroundColor(.secondary)
             }
             .toggleStyle(.switch)
@@ -407,7 +407,9 @@ struct PopoverView: View {
     // MARK: - Quit Function
     
     private func quitApp() {
-        viewModel.setControlMode(.automatic)
+        // Return control to system before quitting
+        viewModel.resetToSystemControl()
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             NSApplication.shared.terminate(nil)
         }

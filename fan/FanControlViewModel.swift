@@ -145,6 +145,10 @@ class FanControlViewModel: ObservableObject {
         fanController.setMode(mode)
     }
     
+    func resetToSystemControl() {
+        fanController.resetToSystemControl()
+    }
+    
     func setAutoThreshold(_ threshold: Double) {
         fanController.setAutoThreshold(threshold)
     }

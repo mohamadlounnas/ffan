@@ -316,6 +316,13 @@ class FanController: ObservableObject {
         }
     }
     
+    // Explicitly return control to system (SMC auto behavior) without app interference
+    func resetToSystemControl() {
+        print("Fan Control: Resetting to system default...")
+        stopAutoControl()
+        restoreAutomaticControl()
+    }
+    
     private func saveSettings() {
         let defaults = UserDefaults.standard
         defaults.set(mode.rawValue, forKey: "fanControlMode")
