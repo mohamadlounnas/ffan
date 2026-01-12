@@ -76,6 +76,20 @@
             gap: 8px;
         }
 
+        .brand-logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+        }
+
+        .hero-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        }
+
         .nav-links {
             display: flex;
             gap: 24px;
@@ -292,7 +306,7 @@
     <div class="container">
         <nav>
             <div class="brand">
-                <span>⚡️</span> ffan
+                <img src="assets/logo.png" alt="ffan" class="brand-logo"> ffan
             </div>
             <div class="nav-links">
                 <a href="https://github.com/mohamadlounnas/ffan/blob/main/docs/README.md">Documentation</a>
@@ -301,7 +315,8 @@
         </nav>
 
         <section class="hero">
-            <div class="pill">v1.0.1 Available</div>
+            <img src="assets/logo.png" alt="ffan" class="hero-logo">
+            <div class="pill">v1.0.2 Available</div>
             <h1>Control your Mac’s<br>performance.</h1>
             <p>A native, lightweight utility to monitor temperatures and control fan speeds. Built for Apple Silicon.</p>
             <div class="button-group">
