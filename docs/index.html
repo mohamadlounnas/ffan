@@ -379,7 +379,7 @@
 
     <script>
         function copyCmd() {
-            const cmd = `curl -L https://github.com/mohamadlounnas/ffan/releases/latest/download/ffan-v1.0.0-macos.zip -o ffan.zip
+            const cmd = `curl -L https://github.com/mohamadlounnas/ffan/archive/refs/heads/main.zip -o ffan.zip
 unzip ffan.zip && mv ffan.app /Applications/`;
             navigator.clipboard.writeText(cmd);
             const btn = document.querySelector('.copy-btn');
