@@ -6,12 +6,14 @@
 
 **A lightweight, powerful menu bar application for monitoring system temperatures and controlling fan speeds on macOS.**
 
-[![Latest Release](https://img.shields.io/github/v/release/USERNAME/ffan)](https://github.com/USERNAME/ffan/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/USERNAME/ffan/total)](https://github.com/USERNAME/ffan/releases)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![macOS](https://img.shields.io/badge/macOS-11.0+-blue.svg)](https://www.apple.com/macos/)
+[![Latest Release](https://img.shields.io/github/v/release/USERNAME/ffan?style=for-the-badge)](https://github.com/USERNAME/ffan/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/USERNAME/ffan/total?style=for-the-badge)](https://github.com/USERNAME/ffan/releases)
+[![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
+[![macOS](https://img.shields.io/badge/macOS-11.0+-blue.svg?style=for-the-badge&logo=apple)](https://www.apple.com/macos/)
 
-[Download](https://github.com/USERNAME/ffan/releases/latest) • [Documentation](docs/README.md) • [Report Bug](https://github.com/USERNAME/ffan/issues) • [Request Feature](https://github.com/USERNAME/ffan/issues)
+### [⬇️ Download Latest Release](https://github.com/USERNAME/ffan/releases/latest)
+
+[📖 Documentation](docs/README.md) • [🐛 Report Bug](https://github.com/USERNAME/ffan/issues) • [💡 Request Feature](https://github.com/USERNAME/ffan/issues) • [⭐ Star on GitHub](https://github.com/USERNAME/ffan)
 
 </div>
 

@@ -1,0 +1,159 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # Triggers on tags like v1.0.0, v2.1.3, etc.
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  build-and-release:
+    name: Build ffan for macOS
+    runs-on: macos-latest  # GitHub provides free macOS runners!
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+      
+      - name: 🔍 Get version from tag
+        id: version
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/v}
+          else
+            VERSION="dev-$(git rev-parse --short HEAD)"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "📌 Building version: $VERSION"
+      
+      - name: ⚙️ Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      
+      - name: 🔨 Build ffan
+        run: |
+          echo "🏗️ Building ffan..."
+          xcodebuild \
+            -project fan.xcodeproj \
+            -scheme ffan \
+            -configuration Release \
+            -derivedDataPath build \
+            clean build \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
+          
+          # Find the built app
+          BUILT_APP=$(find build -name "ffan.app" -type d | head -n 1)
+          echo "✅ Built app: $BUILT_APP"
+          
+          # Create release directory
+          mkdir -p release
+          cp -R "$BUILT_APP" release/ffan.app
+      
+      - name: 🔓 Remove code signature
+        run: |
+          echo "🔓 Removing code signature for broader compatibility..."
+          codesign --remove-signature release/ffan.app 2>/dev/null || true
+      
+      - name: 📦 Create ZIP archive
+        run: |
+          cd release
+          zip -r ../ffan-v${{ steps.version.outputs.version }}-macos.zip ffan.app -x "*.DS_Store"
+          cd ..
+          
+          # Calculate checksum
+          shasum -a 256 ffan-v${{ steps.version.outputs.version }}-macos.zip > ffan-v${{ steps.version.outputs.version }}-macos.zip.sha256
+          
+          echo "📦 Archive created:"
+          ls -lh ffan-v${{ steps.version.outputs.version }}-macos.zip
+      
+      - name: 💿 Create DMG (optional)
+        run: |
+          echo "💿 Creating DMG..."
+          hdiutil create -volname "ffan" \
+            -srcfolder release/ffan.app \
+            -ov -format UDZO \
+            ffan-v${{ steps.version.outputs.version }}-macos.dmg
+          
+          shasum -a 256 ffan-v${{ steps.version.outputs.version }}-macos.dmg > ffan-v${{ steps.version.outputs.version }}-macos.dmg.sha256
+      
+      - name: 📝 Generate release notes
+        id: notes
+        run: |
+          cat > release_notes.md << 'EOF'
+          ## 🌬️ ffan v${{ steps.version.outputs.version }}
+          
+          ### ✨ Features
+          - 🌡️ Real-time CPU/GPU temperature monitoring
+          - 💨 Manual and automatic fan speed control
+          - 📊 Animated menu bar icon
+          - 🚀 Launch at login support
+          - 🎨 Modern liquid glass UI
+          
+          ### 📦 Installation
+          ```bash
+          # Quick install
+          curl -L https://github.com/${{ github.repository }}/releases/download/v${{ steps.version.outputs.version }}/ffan-v${{ steps.version.outputs.version }}-macos.zip -o ffan.zip
+          unzip ffan.zip
+          mv ffan.app /Applications/
+          
+          # Enable fan control
+          cd /Applications/ffan.app/Contents/Resources/tools/smc-helper
+          sudo ./install.sh
+          ```
+          
+          ### 📋 Requirements
+          - macOS 11.0+
+          - Intel or Apple Silicon
+          
+          ### 🔐 SHA256 Checksums
+          ```
+          $(cat ffan-v${{ steps.version.outputs.version }}-macos.zip.sha256)
+          $(cat ffan-v${{ steps.version.outputs.version }}-macos.dmg.sha256)
+          ```
+          
+          ### 📚 [Full Documentation](https://github.com/${{ github.repository }}/blob/main/docs/README.md)
+          
+          ---
+          **⭐ Like ffan? Star the repo!**
+          EOF
+          
+          echo "notes_file=release_notes.md" >> $GITHUB_OUTPUT
+      
+      - name: 🚀 Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          name: ffan v${{ steps.version.outputs.version }}
+          body_path: release_notes.md
+          draft: false
+          prerelease: false
+          files: |
+            ffan-v${{ steps.version.outputs.version }}-macos.zip
+            ffan-v${{ steps.version.outputs.version }}-macos.zip.sha256
+            ffan-v${{ steps.version.outputs.version }}-macos.dmg
+            ffan-v${{ steps.version.outputs.version }}-macos.dmg.sha256
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: 📤 Upload artifacts (for non-tag builds)
+        if: "!startsWith(github.ref, 'refs/tags/')"
+        uses: actions/upload-artifact@v4
+        with:
+          name: ffan-dev-build
+          path: |
+            ffan-v${{ steps.version.outputs.version }}-macos.zip
+            ffan-v${{ steps.version.outputs.version }}-macos.dmg
+          retention-days: 30
+      
+      - name: ✅ Done!
+        run: |
+          echo "✨ Build complete!"
+          echo "📍 Version: ${{ steps.version.outputs.version }}"
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            echo "🔗 Release: https://github.com/${{ github.repository }}/releases/tag/v${{ steps.version.outputs.version }}"
+          else
+            echo "💾 Artifacts uploaded for manual testing"
+          fi
