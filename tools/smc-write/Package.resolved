@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "smckit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/srimanachanta/SMCKit.git",
+      "state" : {
+        "revision" : "53fc7a6e35a897b1658a7ef0f98ed1710fe46723",
+        "version" : "1.1.0"
+      }
+    }
+  ],
+  "version" : 2
+}
