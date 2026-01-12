@@ -1,6 +1,34 @@
 # ffan - Fan Control for macOS
 
-A lightweight menu bar app for monitoring CPU/GPU temperatures and controlling fan speeds on macOS.
+<div align="center">
+
+![ffan Logo](docs/assets/icon.png)
+
+**A lightweight, powerful menu bar application for monitoring system temperatures and controlling fan speeds on macOS.**
+
+[![Latest Release](https://img.shields.io/github/v/release/USERNAME/ffan)](https://github.com/USERNAME/ffan/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/USERNAME/ffan/total)](https://github.com/USERNAME/ffan/releases)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![macOS](https://img.shields.io/badge/macOS-11.0+-blue.svg)](https://www.apple.com/macos/)
+
+[Download](https://github.com/USERNAME/ffan/releases/latest) • [Documentation](docs/README.md) • [Report Bug](https://github.com/USERNAME/ffan/issues) • [Request Feature](https://github.com/USERNAME/ffan/issues)
+
+</div>
+
+---
+
+## ⚡ Quick Start
+
+```bash
+# Download and install
+curl -L https://github.com/USERNAME/ffan/releases/latest/download/ffan-macos.zip -o ffan.zip
+unzip ffan.zip
+mv ffan.app /Applications/
+
+# Install helper for fan control
+cd /Applications/ffan.app/Contents/Resources/tools/smc-helper
+sudo ./install.sh
+```
 
 ## Features
 
