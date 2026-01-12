@@ -317,7 +317,7 @@
         <section class="hero">
             <img src="assets/logo.png" alt="ffan" class="hero-logo">
             <h1>Control your Mac’s<br>performance.</h1>
-            <p>A native, lightweight utility to monitor temperatures and control fan speeds. Built for Apple Silicon.</p>
+            <p>A native, lightweight utility to monitor temperatures and control fan speeds. Built for Apple Silicon & Intel.</p>
             <div class="button-group">
                 <a href="https://lounnas.gumroad.com/l/ffan" class="btn btn-primary">Download Free</a>
                 <a href="https://github.com/mohamadlounnas/ffan" class="btn btn-secondary">Source Code</a>
@@ -365,7 +365,7 @@
                 <button class="copy-btn" onclick="copyCmd()">Copy</button>
                 <code>
                     <span class="comment"># Download and install ffan</span>
-                    <div class="cmd">curl -L https://github.com/mohamadlounnas/ffan/releases/latest/download/ffan-v1.0.0-macos.zip -o ffan.zip</div>
+                    <div class="cmd">curl -L https://github.com/mohamadlounnas/ffan/releases/latest/download/ffan-v1.0.4-macos.zip -o ffan.zip</div>
                     <div class="cmd">unzip ffan.zip && mv ffan.app /Applications/</div>
                 </code>
             </div>
@@ -379,7 +379,7 @@
 
     <script>
         function copyCmd() {
-            const cmd = `curl -L https://github.com/mohamadlounnas/ffan/archive/refs/heads/main.zip -o ffan.zip
+            const cmd = `curl -L https://github.com/mohamadlounnas/ffan/releases/latest/download/ffan-v1.0.4-macos.zip -o ffan.zip
 unzip ffan.zip && mv ffan.app /Applications/`;
             navigator.clipboard.writeText(cmd);
             const btn = document.querySelector('.copy-btn');
