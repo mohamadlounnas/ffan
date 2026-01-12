@@ -2,22 +2,20 @@
 
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/mohamadlounnas/ffan/main/docs/assets/icon.png" alt="ffan icon" width="100" height="100"/>
-
 **A lightweight, powerful menu bar application for monitoring system temperatures and controlling fan speeds on macOS.**
 
 <!-- banner -->
 ![ffan banner](https://raw.githubusercontent.com/mohamadlounnas/ffan/main/docs/assets/banner.png)
 
 
-[![Latest Release](https://img.shields.io/github/v/release/USERNAME/ffan?style=for-the-badge)](https://github.com/USERNAME/ffan/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/USERNAME/ffan/total?style=for-the-badge)](https://github.com/USERNAME/ffan/releases)
+[![Latest Release](https://img.shields.io/github/v/release/mohamadlounnas/ffan?style=for-the-badge)](https://github.com/mohamadlounnas/ffan/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/mohamadlounnas/ffan/total?style=for-the-badge)](https://github.com/mohamadlounnas/ffan/releases)
 [![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 [![macOS](https://img.shields.io/badge/macOS-11.0+-blue.svg?style=for-the-badge&logo=apple)](https://www.apple.com/macos/)
 
-### [⬇️ Download Latest Release](https://github.com/USERNAME/ffan/releases/latest)
+### [⬇️ Download Latest Release](https://github.com/mohamadlounnas/ffan/releases/latest)
 
-[📖 Documentation](docs/README.md) • [🐛 Report Bug](https://github.com/USERNAME/ffan/issues) • [💡 Request Feature](https://github.com/USERNAME/ffan/issues) • [⭐ Star on GitHub](https://github.com/USERNAME/ffan)
+[📖 Documentation](docs/README.md) • [🐛 Report Bug](https://github.com/mohamadlounnas/ffan/issues) • [💡 Request Feature](https://github.com/mohamadlounnas/ffan/issues) • [⭐ Star on GitHub](https://github.com/mohamadlounnas/ffan)
 
 </div>
 
@@ -27,7 +25,7 @@
 
 ```bash
 # Download and install
-curl -L https://github.com/USERNAME/ffan/releases/latest/download/ffan-macos.zip -o ffan.zip
+curl -L https://github.com/mohamadlounnas/ffan/releases/latest/download/ffan-macos.zip -o ffan.zip
 unzip ffan.zip
 mv ffan.app /Applications/
 
