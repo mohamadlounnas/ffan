@@ -36,7 +36,7 @@ jobs:
           echo "🏗️ Building ffan..."
           xcodebuild \
             -project fan.xcodeproj \
-            -scheme ffan \
+            -scheme fan \
             -configuration Release \
             -derivedDataPath build \
             clean build \
