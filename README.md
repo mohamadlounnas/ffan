@@ -2,9 +2,13 @@
 
 <div align="center">
 
-![ffan Logo](docs/assets/icon.png)
+<img src="https://raw.githubusercontent.com/mohamadlounnas/ffan/main/docs/assets/icon.png" alt="ffan icon" width="100" height="100"/>
 
 **A lightweight, powerful menu bar application for monitoring system temperatures and controlling fan speeds on macOS.**
+
+<!-- banner -->
+![ffan banner](https://raw.githubusercontent.com/mohamadlounnas/ffan/main/docs/assets/banner.png)
+
 
 [![Latest Release](https://img.shields.io/github/v/release/USERNAME/ffan?style=for-the-badge)](https://github.com/USERNAME/ffan/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/USERNAME/ffan/total?style=for-the-badge)](https://github.com/USERNAME/ffan/releases)
