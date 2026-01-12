@@ -44,6 +44,23 @@ class FanController: ObservableObject {
         loadSettings()
     }
     
+    /// Call after monitoring has started to apply the saved mode
+    func applyCurrentSettings() {
+        print("Fan Control: Applying current settings - Mode: \(mode)")
+        
+        // Give the system monitor a moment to detect fans
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            guard let self = self else { return }
+            
+            if self.mode == .automatic {
+                self.startAutoControl()
+            } else {
+                self.enableManualMode()
+                self.applyFanSpeed(self.manualSpeed)
+            }
+        }
+    }
+    
     deinit {
         stopAutoControl()
         restoreAutomaticControl()

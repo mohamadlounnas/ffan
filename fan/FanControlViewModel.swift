@@ -129,6 +129,8 @@ class FanControlViewModel: ObservableObject {
     
     func startMonitoring() {
         systemMonitor.startMonitoring()
+        // Apply saved fan control settings after monitoring starts
+        fanController.applyCurrentSettings()
     }
     
     func stopMonitoring() {
