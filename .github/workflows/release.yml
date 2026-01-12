@@ -97,8 +97,8 @@ jobs:
           cp -R release/ffan.app dmg_source/
           ln -s /Applications dmg_source/Applications
           
-          # Copy background image
-          cp assets/installer_bg.png dmg_source/.background/background.png
+          # Resize background image to exactly fit DMG window
+          sips -z $DMG_HEIGHT $DMG_WIDTH assets/installer_bg.png --out dmg_source/.background/background.png
           
           # Create temporary DMG (read-write)
           hdiutil create -volname "ffan" \
