@@ -1,6 +1,6 @@
 //
-//  fanApp.swift
-//  fan
+//  ffanApp.swift
+//  ffan
 //
 //  Created by mohamad on 11/1/2026.
 //  Fixed app lifecycle for menu bar app
@@ -15,8 +15,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var iconUpdateTimer: Timer?
     
     func applicationDidFinishLaunching(_ notification: Notification) {
-        print("App: applicationDidFinishLaunching called")
-        
         // Hide dock icon - MUST be called early
         NSApp.setActivationPolicy(.accessory)
         
@@ -25,7 +23,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     private func setupApplication() {
-        print("App: Setting up application...")
         
         // Initialize view model
         let viewModel = FanControlViewModel()
@@ -36,8 +33,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.statusBarManager = statusBarManager
         statusBarManager.setupStatusBar()
         
-        print("App: Status bar manager created")
-        
         // Create popover content after a brief delay to ensure status bar is ready
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
             guard let self = self,
@@ -46,7 +41,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
             let popoverView = PopoverView(viewModel: viewModel)
             statusBarManager.setPopoverContent(popoverView)
-            print("App: Popover content set")
             
             // Initialize monitoring
             self.initializeMonitoring()
@@ -56,30 +50,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func initializeMonitoring() {
         guard let viewModel = viewModel else { return }
         
-        print("App: Initializing monitoring...")
-        
-        // Check SMC access
-        // Try to access SMC first
-        if viewModel.checkAccess() {
-            print("App: SMC access granted, starting monitoring")
-            viewModel.startMonitoring()
-            startIconUpdateTimer()
-        } else {
-            print("App: SMC access denied")
-            // Try to force start monitoring anyway - sometimes checkAccess fails but read works
-            // or we might need to prompt for permissions (which we can't easily do for SMC IOKit)
-            // For now, let's NOT enable demo mode by default unless explicitly asked
-            // This way the user sees 0 or empty values which indicates an error rather than fake data
-            
-            if UserDefaults.standard.bool(forKey: "showDemoData") {
-                print("App: Demo mode enabled by user setting")
-                viewModel.startMonitoring()
-            } else {
-                print("App: Attempting to start monitoring despite check failure (hope for the best)")
-                viewModel.startMonitoring()
-            }
-             startIconUpdateTimer()
-        }
+        // Start monitoring regardless of permission check
+        // SMC read operations typically work without special privileges
+        viewModel.startMonitoring()
+        startIconUpdateTimer()
     }
     
     private func startIconUpdateTimer() {
@@ -91,7 +65,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         // Initial update
         updateStatusBarIcon()
-        print("App: Icon update timer started")
     }
     
     private func updateStatusBarIcon() {
@@ -104,7 +77,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func applicationWillTerminate(_ notification: Notification) {
-        print("App: Terminating...")
         iconUpdateTimer?.invalidate()
         viewModel?.stopMonitoring()
     }
@@ -116,13 +88,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 // SwiftUI App entry point
 @main
-struct fanApp: App {
+struct ffanApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     var body: some Scene {
         // Use MenuBarExtra for macOS 13+ or Settings with empty content
         Settings {
-            Text("Fan Control")
+            Text("ffan - Fan Control")
                 .frame(width: 0, height: 0)
                 .hidden()
         }

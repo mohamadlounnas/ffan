@@ -1,6 +1,6 @@
 //
 //  StatusBarManager.swift
-//  fan
+//  ffan
 //
 //  Created by mohamad on 11/1/2026.
 //  Animated status bar icon based on fan speed
@@ -27,7 +27,7 @@ class StatusBarManager: ObservableObject {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         
         guard let button = statusItem?.button else {
-            print("StatusBar: Failed to get button")
+
             return
         }
         
@@ -42,8 +42,7 @@ class StatusBarManager: ObservableObject {
         // Handle button click
         button.action = #selector(togglePopover)
         button.target = self
-        
-        print("StatusBar: Status item created successfully")
+
     }
     
     private func updateButtonIcon(button: NSStatusBarButton, rotation: CGFloat) {
@@ -57,7 +56,6 @@ class StatusBarManager: ObservableObject {
             
             let center = NSPoint(x: size/2, y: size/2)
             let bladeLength: CGFloat = size * 0.42  // Longer blades
-            let bladeWidth: CGFloat = size * 0.28   // Much wider blades
             
             // Draw 3 fan blades with solid, visible shape
             for i in 0..<3 {
@@ -67,10 +65,8 @@ class StatusBarManager: ObservableObject {
                 
                 // Start from center hub edge
                 let hubRadius: CGFloat = size * 0.15
-                let startX = center.x + cos(angle) * hubRadius
-                let startY = center.y + sin(angle) * hubRadius
                 
-                // End point of blade
+                // End point of blade (tip)
                 let endX = center.x + cos(angle) * bladeLength
                 let endY = center.y + sin(angle) * bladeLength
                 

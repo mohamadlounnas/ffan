@@ -1,0 +1,56 @@
+# ffan Documentation Manifest
+# This file catalogs all documentation files in the project
+
+version: "1.0"
+project:
+  name: "ffan"
+  description: "macOS Fan Control Application"
+  repository: "https://github.com/yourusername/ffan"
+
+documentation:
+  - file: "README.md"
+    title: "Main Documentation"
+    description: "Comprehensive project overview, installation guide, usage instructions, architecture details, and contribution guidelines for the ffan macOS fan control application"
+    category: "general"
+    audience: ["end-users", "developers", "contributors"]
+    sections:
+      - "Overview & Features"
+      - "Installation & Setup"
+      - "Usage Guide"
+      - "Architecture & Implementation"
+      - "SMC Implementation Details"
+      - "Security Considerations"
+      - "Contributing Guidelines"
+      - "FAQ & Troubleshooting"
+    last_updated: "2026-01-12"
+
+planned:
+  - file: "smc-protocol.md"
+    title: "SMC Protocol Reference"
+    description: "Detailed technical documentation of Apple's System Management Controller protocol, key structures, and implementation details"
+    status: "planned"
+    
+  - file: "thermal-guide.md"
+    title: "Thermal Management Guide"
+    description: "Best practices for thermal management, temperature thresholds, and fan control strategies for different Mac models"
+    status: "planned"
+    
+  - file: "troubleshooting.md"
+    title: "Troubleshooting Guide"
+    description: "Common issues, error messages, and solutions for ffan installation and operation"
+    status: "planned"
+    
+  - file: "api-docs.md"
+    title: "API Documentation"
+    description: "Internal API documentation for developers extending or modifying ffan"
+    status: "planned"
+
+categories:
+  general:
+    description: "General project documentation"
+  technical:
+    description: "Technical implementation details"
+  user-guides:
+    description: "End-user guides and tutorials"
+  development:
+    description: "Development and contribution documentation"

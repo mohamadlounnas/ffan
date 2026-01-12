@@ -1,6 +1,6 @@
 //
 //  SystemMonitor.swift
-//  fan
+//  ffan
 //
 //  Created by mohamad on 11/1/2026.
 //  Rewritten for proper SMC access on both Intel and Apple Silicon Macs
@@ -145,7 +145,6 @@ class SystemMonitor: ObservableObject {
         let service = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("AppleSMC"))
         guard service != 0 else {
             lastError = "AppleSMC service not found"
-            print("SMC: \(lastError!)")
             hasAccess = false
             return false
         }
@@ -155,14 +154,12 @@ class SystemMonitor: ObservableObject {
         let result = IOServiceOpen(service, mach_task_self_, 0, &smcConnection)
         
         if result == kIOReturnSuccess {
-            print("SMC: Successfully connected to AppleSMC")
             hasAccess = true
             lastError = nil
             return true
         } else {
             let errorString = describeIOReturn(result)
             lastError = "Failed to open SMC connection: \(errorString)"
-            print("SMC: \(lastError!)")
             hasAccess = false
             return false
         }

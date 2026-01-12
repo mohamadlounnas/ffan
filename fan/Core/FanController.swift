@@ -1,6 +1,6 @@
 //
 //  FanController.swift
-//  fan
+//  ffan
 //
 //  Created by mohamad on 11/1/2026.
 //  Fixed for proper SMC fan control with sudoers
@@ -231,13 +231,10 @@ class FanController: ObservableObject {
         // ═══════════════════════════════════════════════════════════════
         // Dynamic Control System - Blending Architecture
         // ═══════════════════════════════════════════════════════════════
-        //
         // Response parameter (0 to 3) controls the blend between three states:
-        //
         //   Response = 0.0  →  Always MINIMUM speed (override mode)
         //   Response = 1.5  →  Pure TEMPERATURE-based control (auto mode)
         //   Response = 3.0  →  Always MAXIMUM speed (override mode)
-        //
         // The system smoothly interpolates between these states.
         // ═══════════════════════════════════════════════════════════════
         

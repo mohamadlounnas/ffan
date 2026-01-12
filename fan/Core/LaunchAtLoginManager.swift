@@ -1,6 +1,6 @@
 //
 //  LaunchAtLoginManager.swift
-//  fan
+//  ffan
 //
 //  Created by mohamad on 11/1/2026.
 //  Updated for modern ServiceManagement API (macOS 13+)

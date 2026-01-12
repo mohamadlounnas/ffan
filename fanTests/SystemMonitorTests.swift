@@ -1,12 +1,12 @@
 //
 //  SystemMonitorTests.swift
-//  fanTests
+//  ffanTests
 //
 //  Created by mohamad on 11/1/2026.
 //
 
 import XCTest
-@testable import fan
+@testable import ffan
 
 final class SystemMonitorTests: XCTestCase {
     

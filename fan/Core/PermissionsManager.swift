@@ -1,6 +1,6 @@
 //
 //  PermissionsManager.swift
-//  fan
+//  ffan
 //
 //  Created by mohamad on 11/1/2026.
 //  Manages installation of the helper tool

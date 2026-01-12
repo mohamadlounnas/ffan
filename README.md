@@ -1,4 +1,4 @@
-# Fan Control for macOS
+# ffan - Fan Control for macOS
 
 A lightweight menu bar app for monitoring CPU/GPU temperatures and controlling fan speeds on macOS.
 
@@ -29,7 +29,7 @@ This app accesses the System Management Controller (SMC) to read temperatures an
 To enable fan control, you can run the app with sudo:
 
 ```bash
-sudo /path/to/fan.app/Contents/MacOS/fan
+sudo /path/to/ffan.app/Contents/MacOS/ffan
 ```
 
 ### Demo Mode

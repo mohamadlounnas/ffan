@@ -1,6 +1,6 @@
 //
 //  FanControlViewModel.swift
-//  fan
+//  ffan
 //
 //  Created by mohamad on 11/1/2026.
 //  Fixed bindings and added proper state management

@@ -1,6 +1,6 @@
 //
 //  TemperatureView.swift
-//  fan
+//  ffan
 //
 //  Created by mohamad on 11/1/2026.
 //  Enhanced temperature display with icons and gradients

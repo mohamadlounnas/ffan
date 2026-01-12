@@ -59,7 +59,7 @@ struct SMCWriteCLI {
         }
 
         let key = args[1]
-        let type = args[2]
+        _ = args[2]  // type parameter (unused but required for CLI compatibility)
         let valueStr = args[3]
 
         guard let valueDouble = Double(valueStr) else {
