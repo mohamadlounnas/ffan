@@ -84,21 +84,67 @@ jobs:
           echo "📦 Archive created:"
           ls -lh ffan-v${{ steps.version.outputs.version }}-macos.zip
       
-      - name: 💿 Create DMG with Shortcut
+      - name: 💿 Create Styled DMG
         run: |
-          echo "💿 Creating DMG with Applications shortcut..."
-          # Create staging directory for DMG content
-          mkdir -p dmg_source
-          cp -R release/ffan.app dmg_source/
+          echo "💿 Creating styled DMG with custom background..."
           
-          # Create symlink to Applications
+          # DMG dimensions (4:3 aspect ratio)
+          DMG_WIDTH=640
+          DMG_HEIGHT=480
+          
+          # Create staging directory
+          mkdir -p dmg_source/.background
+          cp -R release/ffan.app dmg_source/
           ln -s /Applications dmg_source/Applications
           
-          # Create DMG from staging directory
+          # Copy background image
+          cp assets/installer_bg.png dmg_source/.background/background.png
+          
+          # Create temporary DMG (read-write)
           hdiutil create -volname "ffan" \
             -srcfolder dmg_source \
-            -ov -format UDZO \
-            ffan-v${{ steps.version.outputs.version }}-macos.dmg
+            -ov -format UDRW \
+            -size 200m \
+            temp_ffan.dmg
+          
+          # Mount the DMG
+          MOUNT_DIR=$(hdiutil attach -readwrite -noverify temp_ffan.dmg | grep "Volumes" | awk '{print $3}')
+          echo "Mounted at: $MOUNT_DIR"
+          
+          # Use AppleScript to set DMG window appearance
+          osascript <<EOF
+          tell application "Finder"
+            tell disk "ffan"
+              open
+              set current view of container window to icon view
+              set toolbar visible of container window to false
+              set statusbar visible of container window to false
+              set bounds of container window to {100, 100, $((100 + DMG_WIDTH)), $((100 + DMG_HEIGHT))}
+              set viewOptions to the icon view options of container window
+              set arrangement of viewOptions to not arranged
+              set icon size of viewOptions to 128
+              set background picture of viewOptions to file ".background:background.png"
+              set position of item "ffan.app" of container window to {160, 280}
+              set position of item "Applications" of container window to {480, 280}
+              close
+              open
+              update without registering applications
+              delay 2
+            end tell
+          end tell
+          EOF
+          
+          # Sync and unmount
+          sync
+          hdiutil detach "$MOUNT_DIR"
+          
+          # Convert to compressed read-only DMG
+          hdiutil convert temp_ffan.dmg \
+            -format UDZO \
+            -imagekey zlib-level=9 \
+            -o ffan-v${{ steps.version.outputs.version }}-macos.dmg
+          
+          rm temp_ffan.dmg
           
           shasum -a 256 ffan-v${{ steps.version.outputs.version }}-macos.dmg > ffan-v${{ steps.version.outputs.version }}-macos.dmg.sha256
       
