@@ -82,9 +82,6 @@ struct FanSpeedView: View {
                         step: 100
                     )
                     .accentColor(.blue)
-                    .onAppear {
-                        localSpeed = Double(max(Int(sliderMin), min(Int(sliderMax), viewModel.manualSpeed)))
-                    }
                     .onChange(of: localSpeed) { _, newValue in
                         // Cancel previous debounce task
                         debounceTask?.cancel()
@@ -102,8 +99,16 @@ struct FanSpeedView: View {
                         }
                     }
                     .onChange(of: viewModel.manualSpeed) { _, newValue in
-                        localSpeed = Double(max(Int(sliderMin), min(Int(sliderMax), newValue)))
+                        // Only update if significantly different to avoid layout loops
+                        let clampedValue = Double(max(Int(sliderMin), min(Int(sliderMax), newValue)))
+                        if abs(localSpeed - clampedValue) > 1 {
+                            localSpeed = clampedValue
+                        }
                         isApplying = false
+                    }
+                    .task {
+                        // Initialize localSpeed after view is set up (safer than onAppear)
+                        localSpeed = Double(max(Int(sliderMin), min(Int(sliderMax), viewModel.manualSpeed)))
                     }
                     
                     // Labels

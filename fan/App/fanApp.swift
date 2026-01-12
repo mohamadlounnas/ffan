@@ -99,7 +99,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
               let statusBarManager = statusBarManager else { return }
         
         let maxTemp = viewModel.getMaxTemperature()
-        statusBarManager.updateIcon(temperature: maxTemp > 0 ? maxTemp : nil)
+        let fanSpeed = viewModel.currentFanSpeed
+        statusBarManager.updateIcon(fanSpeed: fanSpeed, temperature: maxTemp > 0 ? maxTemp : nil)
     }
     
     func applicationWillTerminate(_ notification: Notification) {

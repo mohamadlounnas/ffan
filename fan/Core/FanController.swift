@@ -19,14 +19,17 @@ class FanController: ObservableObject {
     @Published var mode: ControlMode = .manual
     @Published var manualSpeed: Int = 2000
     @Published var autoThreshold: Double = 60.0
-    @Published var autoMaxSpeed: Int = 4000
+    @Published var autoMaxSpeed: Int = 6500
+    @Published var autoAggressiveness: Double = 1.5  // 0.0 = always min, 1.5 = temp-based, 3.0 = always max
     @Published var isControlEnabled = false
     @Published var lastWriteSuccess = false
     @Published var statusMessage: String = ""
+    @Published var lastAppliedSpeed: Int = 0  // Track what we last applied
     
     private weak var systemMonitor: SystemMonitor?
     private var autoControlTimer: Timer?
     private var cancellables = Set<AnyCancellable>()
+    private var lastUpdateTime: Date = .distantPast
     
     let minSpeed = 1000
     let maxSpeed = 6500
@@ -199,12 +202,14 @@ class FanController: ObservableObject {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             
-            self.autoControlTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { [weak self] _ in
+            // Run immediately
+            self.updateAutoControl()
+            
+            // Then every 2 seconds for more responsive updates
+            self.autoControlTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
                 self?.updateAutoControl()
             }
             RunLoop.current.add(self.autoControlTimer!, forMode: .common)
-            
-            self.updateAutoControl()
         }
     }
     
@@ -216,34 +221,71 @@ class FanController: ObservableObject {
     private func updateAutoControl() {
         guard mode == .automatic, let monitor = systemMonitor else { return }
         
-        let maxTemp = max(
+        let currentTemp = max(
             monitor.cpuTemperature ?? 0,
             monitor.gpuTemperature ?? 0
         )
         
-        guard maxTemp > 0 else { return }
+        guard currentTemp > 0 else { return }
         
-        let targetSpeed: Int
+        // ═══════════════════════════════════════════════════════════════
+        // Dynamic Control System - Blending Architecture
+        // ═══════════════════════════════════════════════════════════════
+        //
+        // Response parameter (0 to 3) controls the blend between three states:
+        //
+        //   Response = 0.0  →  Always MINIMUM speed (override mode)
+        //   Response = 1.5  →  Pure TEMPERATURE-based control (auto mode)
+        //   Response = 3.0  →  Always MAXIMUM speed (override mode)
+        //
+        // The system smoothly interpolates between these states.
+        // ═══════════════════════════════════════════════════════════════
         
-        if maxTemp < autoThreshold {
-            return
-        } else if maxTemp >= 95.0 {
-            targetSpeed = autoMaxSpeed
-        } else if maxTemp >= 85.0 {
-            let ratio = (maxTemp - 85.0) / 10.0
-            targetSpeed = Int(Double(autoMaxSpeed - 1500) * ratio) + autoMaxSpeed - 500
+        let response = autoAggressiveness  // Range: 0.0 to 3.0
+        let midPoint = 1.5  // The "pure auto" point
+        
+        // Step 1: Calculate pure temperature-based speed
+        // Using fixed range 30°C-90°C for predictable behavior
+        // At 50°C: ratio = 20/60 = 0.33 → speed ≈ 2800-3000 RPM
+        let tempFloor = 30.0
+        let tempCeiling = 90.0
+        let tempRatio = max(0.0, min(1.0, (currentTemp - tempFloor) / (tempCeiling - tempFloor)))
+        let tempBasedSpeed = Double(minSpeed) + Double(autoMaxSpeed - minSpeed) * tempRatio
+        
+        // Step 2: Blend based on response setting
+        let targetSpeed: Double
+        
+        if response <= midPoint {
+            // Region 1: Blend between MINIMUM and TEMPERATURE-BASED
+            // response=0.0 → 100% minSpeed
+            // response=1.5 → 100% tempBasedSpeed
+            let blend = response / midPoint  // 0.0 to 1.0
+            targetSpeed = Double(minSpeed) * (1.0 - blend) + tempBasedSpeed * blend
         } else {
-            let tempRange = 85.0 - autoThreshold
-            let speedRange = autoMaxSpeed - minSpeed
-            let tempAboveThreshold = maxTemp - autoThreshold
-            let ratio = tempAboveThreshold / tempRange
-            targetSpeed = minSpeed + Int(Double(speedRange) * ratio)
+            // Region 2: Blend between TEMPERATURE-BASED and MAXIMUM
+            // response=1.5 → 100% tempBasedSpeed
+            // response=3.0 → 100% maxSpeed
+            let blend = (response - midPoint) / (3.0 - midPoint)  // 0.0 to 1.0
+            targetSpeed = tempBasedSpeed * (1.0 - blend) + Double(autoMaxSpeed) * blend
         }
         
+        // Step 3: Apply the calculated speed
         if !isControlEnabled {
             enableManualMode()
         }
-        applyFanSpeed(min(targetSpeed, maxSpeed))
+        
+        let finalSpeed = Int(max(Double(minSpeed), min(targetSpeed, Double(autoMaxSpeed))))
+        
+        // Only apply if speed changed significantly (avoid unnecessary SMC calls)
+        if abs(finalSpeed - lastAppliedSpeed) >= 50 || lastAppliedSpeed == 0 {
+            applyFanSpeed(finalSpeed)
+            lastAppliedSpeed = finalSpeed
+            
+            // Update status with debug info
+            DispatchQueue.main.async { [weak self] in
+                self?.statusMessage = "Auto: \(finalSpeed) RPM (Response: \(String(format: "%.1f", self?.autoAggressiveness ?? 0)))"
+            }
+        }
     }
     
     private func loadSettings() {
@@ -267,6 +309,11 @@ class FanController: ObservableObject {
         if savedMaxSpeed >= minSpeed && savedMaxSpeed <= maxSpeed {
             autoMaxSpeed = savedMaxSpeed
         }
+        
+        let savedAggressiveness = defaults.double(forKey: "autoAggressiveness")
+        if savedAggressiveness >= 0.0 && savedAggressiveness <= 3.0 {
+            autoAggressiveness = savedAggressiveness
+        }
     }
     
     private func saveSettings() {
@@ -275,15 +322,36 @@ class FanController: ObservableObject {
         defaults.set(manualSpeed, forKey: "manualFanSpeed")
         defaults.set(autoThreshold, forKey: "autoThreshold")
         defaults.set(autoMaxSpeed, forKey: "autoMaxSpeed")
+        defaults.set(autoAggressiveness, forKey: "autoAggressiveness")
     }
     
     func setAutoThreshold(_ threshold: Double) {
         autoThreshold = max(40, min(90, threshold))
         saveSettings()
+        // Force immediate update in auto mode
+        if mode == .automatic {
+            lastAppliedSpeed = 0  // Reset to force update
+            updateAutoControl()
+        }
     }
     
     func setAutoMaxSpeed(_ speed: Int) {
         autoMaxSpeed = max(minSpeed, min(maxSpeed, speed))
         saveSettings()
+        // Force immediate update in auto mode
+        if mode == .automatic {
+            lastAppliedSpeed = 0  // Reset to force update
+            updateAutoControl()
+        }
+    }
+    
+    func setAutoAggressiveness(_ value: Double) {
+        autoAggressiveness = max(0.0, min(3.0, value))
+        saveSettings()
+        // Force immediate update in auto mode
+        if mode == .automatic {
+            lastAppliedSpeed = 0  // Reset to force update
+            updateAutoControl()
+        }
     }
 }

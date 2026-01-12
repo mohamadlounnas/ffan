@@ -12,11 +12,16 @@ struct TemperatureView: View {
     let label: String
     let temperature: Double?
     let color: Color
+    var icon: String? = nil
     
-    private var icon: String {
+    private var displayIcon: String {
+        if let customIcon = icon {
+            return customIcon
+        }
         switch label.lowercased() {
         case "cpu": return "cpu"
         case "gpu": return "gpu"
+        case "power": return "bolt.fill"
         default: return "thermometer"
         }
     }
@@ -33,7 +38,7 @@ struct TemperatureView: View {
         VStack(spacing: 10) {
             // Header with icon
             HStack(spacing: 6) {
-                Image(systemName: icon)
+                Image(systemName: displayIcon)
                     .font(.system(size: 12, weight: .medium))
                     .foregroundColor(color.opacity(0.8))
                 

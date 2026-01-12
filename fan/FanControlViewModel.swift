@@ -28,6 +28,7 @@ class FanControlViewModel: ObservableObject {
     @Published var manualSpeed: Int = 2000
     @Published var autoThreshold: Double = 60.0
     @Published var autoMaxSpeed: Int = 4000
+    @Published var autoAggressiveness: Double = 1.5
     
     // Status
     @Published var isMonitoring = false
@@ -106,6 +107,10 @@ class FanControlViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .assign(to: &$autoMaxSpeed)
         
+        fanController.$autoAggressiveness
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$autoAggressiveness)
+        
         fanController.$statusMessage
             .receive(on: DispatchQueue.main)
             .assign(to: &$statusMessage)
@@ -148,6 +153,10 @@ class FanControlViewModel: ObservableObject {
         fanController.setAutoMaxSpeed(speed)
     }
     
+    func setAutoAggressiveness(_ value: Double) {
+        fanController.setAutoAggressiveness(value)
+    }
+    
     // MARK: - Access Control
     
     func checkAccess() -> Bool {
@@ -155,9 +164,9 @@ class FanControlViewModel: ObservableObject {
     }
     
     func requestPermissions() {
-        if !PermissionsManager.shared.checkSMCAccess() {
-            PermissionsManager.shared.showPermissionAlert()
-        }
+        // Permissions are handled via smc-helper installation
+        // The helper should already be installed via install.sh
+        PermissionsManager.shared.checkInstallation()
     }
     
     // MARK: - Demo Mode
