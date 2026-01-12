@@ -44,8 +44,16 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO
           
-          # Find the built app
-          BUILT_APP=$(find build -name "ffan.app" -type d | head -n 1)
+          # The app is built to a predictable location
+          BUILT_APP="build/Build/Products/Release/fan.app"
+          
+          if [ ! -d "$BUILT_APP" ]; then
+            echo "❌ Error: Built app not found at $BUILT_APP"
+            echo "Looking for app in build directory:"
+            find build -name "*.app" -type d
+            exit 1
+          fi
+          
           echo "✅ Built app: $BUILT_APP"
           
           # Create release directory
