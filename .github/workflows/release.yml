@@ -42,7 +42,11 @@ jobs:
             -scheme fan \
             -configuration Release \
             -derivedDataPath build \
-            clean build
+            clean build \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            DEVELOPMENT_TEAM=""
           
           # The app is built to a predictable location
           BUILT_APP="build/Build/Products/Release/fan.app"
