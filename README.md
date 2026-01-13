@@ -2,6 +2,9 @@
 
 A lightweight menu bar app for monitoring CPU/GPU temperatures and controlling fan speeds on macOS.
 
+<!-- banner -->
+![ffan banner](https://raw.githubusercontent.com/mohamadlounnas/ffan/main/docs/assets/banner.png)
+
 ## Features
 
 - 🌡️ **Temperature Monitoring**: Real-time CPU and GPU temperature readings
