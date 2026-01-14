@@ -5,6 +5,10 @@ A lightweight menu bar app for monitoring CPU/GPU temperatures and controlling f
 <!-- banner -->
 ![ffan banner](https://raw.githubusercontent.com/mohamadlounnas/ffan/main/docs/assets/banner.png)
 
+## Download
+
+[**Download Latest Version (v1.0.5)**](https://github.com/mohamadlounnas/ffan/releases/download/v1.0.5/ffan-v1.0.5-macos.zip)
+
 ## Features
 
 - 🌡️ **Temperature Monitoring**: Real-time CPU and GPU temperature readings

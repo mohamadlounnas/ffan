@@ -365,7 +365,7 @@
                 <button class="copy-btn" onclick="copyCmd()">Copy</button>
                 <code>
                     <span class="comment"># Download and install ffan</span>
-                    <div class="cmd">curl -L https://github.com/mohamadlounnas/ffan/releases/latest/download/ffan-v1.0.4-macos.zip -o ffan.zip</div>
+                    <div class="cmd">curl -L https://github.com/mohamadlounnas/ffan/releases/latest/download/ffan-v1.0.5-macos.zip -o ffan.zip</div>
                     <div class="cmd">unzip ffan.zip && mv ffan.app /Applications/</div>
                 </code>
             </div>
@@ -379,7 +379,7 @@
 
     <script>
         function copyCmd() {
-            const cmd = `curl -L https://github.com/mohamadlounnas/ffan/releases/latest/download/ffan-v1.0.4-macos.zip -o ffan.zip
+            const cmd = `curl -L https://github.com/mohamadlounnas/ffan/releases/latest/download/ffan-v1.0.5-macos.zip -o ffan.zip
 unzip ffan.zip && mv ffan.app /Applications/`;
             navigator.clipboard.writeText(cmd);
             const btn = document.querySelector('.copy-btn');
