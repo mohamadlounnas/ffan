@@ -7,7 +7,13 @@ A lightweight menu bar app for monitoring CPU/GPU temperatures and controlling f
 
 ## Download
 
-[**Download Latest Version (v1.0.6)**](https://github.com/mohamadlounnas/ffan/releases/download/v1.0.6/ffan-v1.0.6-macos.zip)
+[**Download Latest Version (v1.1.0)**](https://github.com/mohamadlounnas/ffan/releases/latest)
+
+**Quick Start:**
+1. Download the DMG from the link above
+2. Drag ffan.app to /Applications/
+3. Launch the app and click "Install Helper" when prompted
+4. Enter your password once - that's it!
 
 ## Features
 
@@ -31,17 +37,24 @@ This app accesses the System Management Controller (SMC) to read temperatures an
 1. **Temperature Reading**: Works on most Macs without special privileges
 2. **Fan Control**: Requires root/admin privileges on modern macOS versions
 
-### Running with Admin Privileges
+### Helper Tool Installation
 
-To enable fan control, you can run the app with sudo:
+On first launch, the app will prompt you to install a helper tool. This is a **one-time setup**:
 
+- Click "Install Helper" in the app
+- Enter your admin password once
+- The helper tool enables fan control without repeated password prompts
+
+**Alternative:** Manual installation via Terminal (for advanced users)
 ```bash
-sudo /path/to/ffan.app/Contents/MacOS/ffan
+sudo cp /Applications/ffan.app/Contents/Resources/smc-helper /usr/local/bin/
+sudo chown root:wheel /usr/local/bin/smc-helper
+sudo chmod 4755 /usr/local/bin/smc-helper
 ```
 
 ### Demo Mode
 
-If SMC access is restricted, you can enable Demo Mode to see how the app works with simulated data.
+If you want to test the UI without installing the helper tool, enable Demo Mode from the app menu to see simulated data.
 
 ## Architecture
 

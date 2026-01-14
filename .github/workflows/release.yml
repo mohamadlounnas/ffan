@@ -162,6 +162,15 @@ jobs:
           - 🎨 Modern liquid glass UI
           
           ### 📦 Installation
+          
+          **Option 1: GUI Installation (Recommended)**
+          1. Download and open the DMG
+          2. Drag ffan.app to /Applications/
+          3. Launch the app - it will prompt you to install the helper tool
+          4. Click "Install Helper" and enter your password once
+          5. Done! No more password prompts needed.
+          
+          **Option 2: Command Line Installation**
           ```bash
           # Download and extract
           curl -L https://github.com/${{ github.repository }}/releases/download/v${{ steps.version.outputs.version }}/ffan-v${{ steps.version.outputs.version }}-macos.zip -o ffan.zip
