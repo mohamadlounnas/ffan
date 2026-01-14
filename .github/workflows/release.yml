@@ -163,14 +163,18 @@ jobs:
           
           ### 📦 Installation
           ```bash
-          # Quick install
+          # Download and extract
           curl -L https://github.com/${{ github.repository }}/releases/download/v${{ steps.version.outputs.version }}/ffan-v${{ steps.version.outputs.version }}-macos.zip -o ffan.zip
           unzip ffan.zip
+          
+          # Remove old version if exists and install new one
+          rm -rf /Applications/ffan.app
           mv ffan.app /Applications/
           
-          # Enable fan control
-          cd /Applications/ffan.app/Contents/Resources/tools/smc-helper
-          sudo ./install.sh
+          # Enable fan control (requires password once)
+          sudo cp /Applications/ffan.app/Contents/Resources/smc-helper /usr/local/bin/
+          sudo chown root:wheel /usr/local/bin/smc-helper
+          sudo chmod 4755 /usr/local/bin/smc-helper
           ```
           
           ### 📋 Requirements
