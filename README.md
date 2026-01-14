@@ -45,12 +45,12 @@ On first launch, the app will prompt you to install a helper tool. This is a **o
 - Enter your admin password once
 - The helper tool enables fan control without repeated password prompts
 
-**Alternative:** Manual installation via Terminal (for advanced users)
+**Alternative:** Automated installation via Terminal
 ```bash
-sudo cp /Applications/ffan.app/Contents/Resources/smc-helper /usr/local/bin/
-sudo chown root:wheel /usr/local/bin/smc-helper
-sudo chmod 4755 /usr/local/bin/smc-helper
+curl -fsSL https://raw.githubusercontent.com/mohamadlounnas/ffan/main/scripts/install.sh | bash
 ```
+
+This script downloads the latest version, installs the app, and sets up the helper tool automatically.
 
 ### Demo Mode
 

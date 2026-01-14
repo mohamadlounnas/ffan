@@ -171,16 +171,18 @@ jobs:
           5. Done! No more password prompts needed.
           
           **Option 2: Command Line Installation**
+          
+          Quick install (auto-detects latest version):
           ```bash
-          # Download and extract
+          curl -fsSL https://raw.githubusercontent.com/mohamadlounnas/ffan/main/scripts/install.sh | bash
+          ```
+          
+          Or manual installation:
+          ```bash
           curl -L https://github.com/${{ github.repository }}/releases/download/v${{ steps.version.outputs.version }}/ffan-v${{ steps.version.outputs.version }}-macos.zip -o ffan.zip
           unzip ffan.zip
-          
-          # Remove old version if exists and install new one
           rm -rf /Applications/ffan.app
           mv ffan.app /Applications/
-          
-          # Enable fan control (requires password once)
           sudo cp /Applications/ffan.app/Contents/Resources/smc-helper /usr/local/bin/
           sudo chown root:wheel /usr/local/bin/smc-helper
           sudo chmod 4755 /usr/local/bin/smc-helper
