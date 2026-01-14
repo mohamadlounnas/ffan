@@ -316,45 +316,46 @@
 
         <section class="hero">
             <img src="assets/logo.png" alt="ffan" class="hero-logo">
-            <h1>Control your Mac’s<br>performance.</h1>
-            <p>A native, lightweight utility to monitor temperatures and control fan speeds. Built for Apple Silicon & Intel.</p>
+            <div class="pill">v1.1.2 • Free & Open Source</div>
+            <h1>Master your Mac's<br>thermals.</h1>
+            <p>A native menu bar app to monitor temperatures and control fan speeds in real-time. Works on Apple Silicon & Intel Macs.</p>
             <div class="button-group">
-                <a href="https://lounnas.gumroad.com/l/ffan" class="btn btn-primary">Download Free</a>
-                <a href="https://github.com/mohamadlounnas/ffan" class="btn btn-secondary">Source Code</a>
+                <a href="https://github.com/mohamadlounnas/ffan/releases/latest" class="btn btn-primary">Download v1.1.2</a>
+                <a href="https://github.com/mohamadlounnas/ffan" class="btn btn-secondary">View on GitHub</a>
             </div>
         </section>
 
         <section class="bento-grid">
             <div class="card span-2">
                 <div class="card-icon">🌡️</div>
-                <h3>Precision Monitoring</h3>
-                <p>Get real-time readouts from CPU and GPU sensors. Our intelligent averaging algorithm filters out noise to give you the data that actually matters.</p>
+                <h3>Real-Time Monitoring</h3>
+                <p>Live CPU and GPU temperature readings directly from SMC sensors. Smart averaging filters out noise to show you what matters.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">💨</div>
+                <h3>Smart Fan Control</h3>
+                <p>Manual or automatic modes. Set fixed speeds or let temps dictate RPM with custom curves.</p>
             </div>
             <div class="card">
                 <div class="card-icon">⚡️</div>
-                <h3>Native SwiftUI</h3>
-                <p>Built with pure Swift using the latest Apple frameworks. It feels right at home on macOS Sequoia.</p>
+                <h3>Native & Fast</h3>
+                <p>Pure SwiftUI. <15MB RAM, <0.1% CPU. Lives in your menu bar, stays out of your way.</p>
             </div>
             <div class="card">
-                <div class="card-icon">🤫</div>
-                <h3>Zero Noise</h3>
-                <p>Runs efficiently in the background using less than 15MB of RAM and 0.1% CPU.</p>
+                <div class="card-icon">🔒</div>
+                <h3>Privacy First</h3>
+                <p>No analytics. No telemetry. No internet required. Your data never leaves your Mac.</p>
             </div>
             <div class="card span-2">
-                <div class="card-icon">🔒</div>
-                <h3>Privacy by Design</h3>
-                <p>No analytics. No telemetry. No internet connection required. Your system stats leave your computer.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon">🎛️</div>
-                <h3>Full Control</h3>
-                <p>Set custom RPM curves or manual fixed speeds to keep your machine cool under heavy load.</p>
+                <div class="card-icon">🚀</div>
+                <h3>One-Click Setup</h3>
+                <p>Download, drag to Applications, click "Install Helper" – done. No terminal commands needed (but we've got those too).</p>
             </div>
         </section>
 
         <section class="install-section">
-            <h2>Get Started via Terminal</h2>
-            <p style="color: var(--text-secondary); margin-top: 16px;">Prefer command line? We got you.</p>
+            <h2>Install via Terminal</h2>
+            <p style="color: var(--text-secondary); margin-top: 16px;">One command. Auto-installs everything.</p>
             
             <div class="terminal">
                 <div class="terminal-header">
@@ -364,9 +365,8 @@
                 </div>
                 <button class="copy-btn" onclick="copyCmd()">Copy</button>
                 <code>
-                    <span class="comment"># Download and install ffan</span>
-                    <div class="cmd">curl -L https://github.com/mohamadlounnas/ffan/releases/latest/download/ffan-v1.1.2-macos.zip -o ffan.zip</div>
-                    <div class="cmd">unzip ffan.zip && mv ffan.app /Applications/</div>
+                    <span class="comment"># Automated installation (downloads, installs, sets up helper)</span>
+                    <div class="cmd">curl -fsSL https://raw.githubusercontent.com/mohamadlounnas/ffan/main/scripts/install.sh | bash</div>
                 </code>
             </div>
         </section>
@@ -379,11 +379,10 @@
 
     <script>
         function copyCmd() {
-            const cmd = `curl -L https://github.com/mohamadlounnas/ffan/releases/latest/download/ffan-v1.1.2-macos.zip -o ffan.zip
-unzip ffan.zip && mv ffan.app /Applications/`;
+            const cmd = `curl -fsSL https://raw.githubusercontent.com/mohamadlounnas/ffan/main/scripts/install.sh | bash`;
             navigator.clipboard.writeText(cmd);
             const btn = document.querySelector('.copy-btn');
-            btn.textContent = 'Copied!';
+            btn.textContent = '✓ Copied!';
             setTimeout(() => btn.textContent = 'Copy', 2000);
         }
     </script>
