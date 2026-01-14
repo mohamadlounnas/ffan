@@ -42,6 +42,17 @@ RELEASE_APP="$RELEASE_DIR/${APP_NAME}.app"
 rm -rf "$RELEASE_APP"
 cp -R "$BUILT_APP" "$RELEASE_APP"
 
+# Copy tools directory into app bundle Resources
+echo "📦 Copying tools directory to app bundle..."
+RESOURCES_DIR="$RELEASE_APP/Contents/Resources"
+mkdir -p "$RESOURCES_DIR"
+if [ -d "$PROJECT_DIR/tools" ]; then
+    cp -R "$PROJECT_DIR/tools" "$RESOURCES_DIR/"
+    echo "✅ Copied tools directory to $RESOURCES_DIR/tools"
+else
+    echo "⚠️  Warning: tools directory not found at $PROJECT_DIR/tools"
+fi
+
 # Remove code signature (optional - allows users to run without warnings)
 echo "🔓 Removing code signature..."
 codesign --remove-signature "$RELEASE_APP" 2>/dev/null || true
