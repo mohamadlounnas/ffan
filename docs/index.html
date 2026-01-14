@@ -236,8 +236,6 @@
 
         /* Installation */
         .install-section {
-            background: var(--surface);
-            border: 1px solid var(--border);
             border-radius: var(--radius-l);
             padding: 60px;
             text-align: center;
@@ -324,6 +322,24 @@
             </div>
         </section>
 
+        <section class="install-section">
+            <h2>Install via Terminal</h2>
+            <p style="color: var(--text-secondary); margin-top: 16px;">One command. Auto-installs everything.</p>
+            
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                </div>
+                <button class="copy-btn" onclick="copyCmd()">Copy</button>
+                <code>
+                    <span class="comment"># Automated installation (downloads, installs, sets up helper)</span>
+                    <div class="cmd">curl -fsSL https://raw.githubusercontent.com/mohamadlounnas/ffan/main/scripts/install.sh | bash</div>
+                </code>
+            </div>
+        </section>
+
         <section class="bento-grid">
             <div class="card span-2">
                 <div class="card-icon">🌡️</div>
@@ -349,24 +365,6 @@
                 <div class="card-icon">🚀</div>
                 <h3>One-Click Setup</h3>
                 <p>Download, drag to Applications, click "Install Helper" – done. No terminal commands needed (but we've got those too).</p>
-            </div>
-        </section>
-
-        <section class="install-section">
-            <h2>Install via Terminal</h2>
-            <p style="color: var(--text-secondary); margin-top: 16px;">One command. Auto-installs everything.</p>
-            
-            <div class="terminal">
-                <div class="terminal-header">
-                    <div class="dot red"></div>
-                    <div class="dot yellow"></div>
-                    <div class="dot green"></div>
-                </div>
-                <button class="copy-btn" onclick="copyCmd()">Copy</button>
-                <code>
-                    <span class="comment"># Automated installation (downloads, installs, sets up helper)</span>
-                    <div class="cmd">curl -fsSL https://raw.githubusercontent.com/mohamadlounnas/ffan/main/scripts/install.sh | bash</div>
-                </code>
             </div>
         </section>
 
