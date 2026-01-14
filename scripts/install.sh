@@ -37,6 +37,7 @@ rm /tmp/ffan.zip
 
 echo ""
 echo "✅ Installation complete!"
-echo "🚀 Launch ffan from your Applications folder"
+echo "🚀 Launching ffan..."
 echo ""
-echo "   Or run: open /Applications/ffan.app"
+
+open /Applications/ffan.app

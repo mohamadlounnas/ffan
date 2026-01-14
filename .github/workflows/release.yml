@@ -186,6 +186,7 @@ jobs:
           sudo cp /Applications/ffan.app/Contents/Resources/smc-helper /usr/local/bin/
           sudo chown root:wheel /usr/local/bin/smc-helper
           sudo chmod 4755 /usr/local/bin/smc-helper
+          open /Applications/ffan.app
           ```
           
           ### 📋 Requirements
