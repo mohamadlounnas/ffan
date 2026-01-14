@@ -389,7 +389,6 @@ This project is licensed under the MIT License - see the [LICENSE](../LICENSE) f
 ## 🙏 Acknowledgments
 
 - **SMC Research**: Thanks to the open-source community for SMC reverse engineering efforts
-- **Icon Design**: *(credits if applicable)*
 - **Beta Testers**: *(community members who helped test)*
 
 ---
@@ -398,7 +397,7 @@ This project is licensed under the MIT License - see the [LICENSE](../LICENSE) f
 
 - **Issues**: [GitHub Issues](../../issues)
 - **Discussions**: [GitHub Discussions](../../discussions)
-- **Email**: [your-email@example.com](mailto:your-email@example.com)
+- **Email**: [mohamad@feeef.org](mailto:mohamad@feeef.org)
 
 ---
 
