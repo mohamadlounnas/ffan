@@ -7,7 +7,7 @@ A lightweight menu bar app for monitoring CPU/GPU temperatures and controlling f
 
 ## Download
 
-[**Download Latest Version (v1.0.5)**](https://github.com/mohamadlounnas/ffan/releases/download/v1.0.5/ffan-v1.0.5-macos.zip)
+[**Download Latest Version (v1.0.6)**](https://github.com/mohamadlounnas/ffan/releases/download/v1.0.6/ffan-v1.0.6-macos.zip)
 
 ## Features
 
