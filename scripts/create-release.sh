@@ -51,7 +51,7 @@ rm ffan.zip
 
 # Install SMC helper for fan control
 cd /Applications/ffan.app/Contents/Resources/tools/smc-helper
-sudo make install
+sudo ./install.sh
 ```
 
 #### Method 2: Manual Install
