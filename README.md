@@ -7,7 +7,7 @@ A lightweight menu bar app for monitoring CPU/GPU temperatures and controlling f
 
 ## Download
 
-[**Download Latest Version (v1.1.0)**](https://github.com/mohamadlounnas/ffan/releases/latest)
+[**Download Latest Version (v1.1.2)**](https://github.com/mohamadlounnas/ffan/releases/latest)
 
 **Quick Start:**
 1. Download the DMG from the link above
@@ -50,7 +50,7 @@ On first launch, the app will prompt you to install a helper tool. This is a **o
 curl -fsSL https://raw.githubusercontent.com/mohamadlounnas/ffan/main/scripts/install.sh | bash
 ```
 
-This script downloads the latest version, installs the app, and sets up the helper tool automatically.
+This script downloads the latest version, installs the app, sets up the helper tool, and launches ffan automatically.
 
 ### Demo Mode
 
