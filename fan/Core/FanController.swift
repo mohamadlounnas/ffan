@@ -42,6 +42,11 @@ class FanController: ObservableObject {
     init(systemMonitor: SystemMonitor) {
         self.systemMonitor = systemMonitor
         loadSettings()
+        
+        // Apply initial settings after a brief delay to let system stabilize
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            self?.applyInitialSettings()
+        }
     }
     
     deinit {
@@ -49,9 +54,19 @@ class FanController: ObservableObject {
         restoreAutomaticControl()
     }
     
-    func reapplySettings() {
-        guard isControlEnabled else { return }
+    private func applyInitialSettings() {
+        print("FanController: Applying initial settings - mode: \(mode)")
         
+        switch mode {
+        case .manual:
+            enableManualMode()
+            applyFanSpeed(manualSpeed)
+        case .automatic:
+            startAutoControl()
+        }
+    }
+    
+    func reapplySettings() {
         print("FanController: Reapplying settings after wake - mode: \(mode)")
         
         switch mode {
