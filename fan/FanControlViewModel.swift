@@ -9,6 +9,7 @@
 import Foundation
 import Combine
 import SwiftUI
+import AppKit
 
 @MainActor
 class FanControlViewModel: ObservableObject {
@@ -50,6 +51,7 @@ class FanControlViewModel: ObservableObject {
         self.launchAtLogin = LaunchAtLoginManager.shared.isEnabled
         self.isDemoMode = UserDefaults.standard.bool(forKey: "showDemoData")
         setupBindings()
+        setupSleepWakeNotifications()
     }
     
     private func setupBindings() {
@@ -123,6 +125,59 @@ class FanControlViewModel: ObservableObject {
         $fanSpeeds
             .map { $0.first ?? 0 }
             .assign(to: &$currentFanSpeed)
+    }
+    
+    // MARK: - Monitoring Control
+    
+    private func setupSleepWakeNotifications() {
+        // Register for sleep notification
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self,
+            selector: #selector(systemWillSleep),
+            name: NSWorkspace.willSleepNotification,
+            object: nil
+        )
+        
+        // Register for wake notification
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self,
+            selector: #selector(systemDidWake),
+            name: NSWorkspace.didWakeNotification,
+            object: nil
+        )
+        
+        // Register for screen lock notification
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self,
+            selector: #selector(systemWillSleep),
+            name: NSWorkspace.screensDidSleepNotification,
+            object: nil
+        )
+        
+        // Register for screen unlock notification
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self,
+            selector: #selector(systemDidWake),
+            name: NSWorkspace.screensDidWakeNotification,
+            object: nil
+        )
+    }
+    
+    private func removeSleepWakeNotifications() {
+        NSWorkspace.shared.notificationCenter.removeObserver(self)
+    }
+    
+    @objc private func systemWillSleep() {
+        print("FanControl: System going to sleep/lock - restoring system control")
+        fanController.restoreAutomaticControl()
+    }
+    
+    @objc private func systemDidWake() {
+        print("FanControl: System woke up - reapplying user settings")
+        // Give the system a moment to stabilize
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+            self?.fanController.reapplySettings()
+        }
     }
     
     // MARK: - Monitoring Control

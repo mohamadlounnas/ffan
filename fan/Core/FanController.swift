@@ -49,6 +49,20 @@ class FanController: ObservableObject {
         restoreAutomaticControl()
     }
     
+    func reapplySettings() {
+        guard isControlEnabled else { return }
+        
+        print("FanController: Reapplying settings after wake - mode: \(mode)")
+        
+        switch mode {
+        case .manual:
+            enableManualMode()
+            applyFanSpeed(manualSpeed)
+        case .automatic:
+            startAutoControl()
+        }
+    }
+    
     func setManualSpeed(_ speed: Int) {
         guard mode == .manual else { return }
         
@@ -87,7 +101,7 @@ class FanController: ObservableObject {
         print("Fan Control: Manual control enabled")
     }
     
-    private func restoreAutomaticControl() {
+    func restoreAutomaticControl() {
         guard let monitor = systemMonitor else { return }
         guard monitor.numberOfFans > 0 else { return }
         
