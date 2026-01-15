@@ -88,8 +88,14 @@ class FanController: ObservableObject {
         case .manual:
             enableManualMode()
             applyFanSpeed(manualSpeed)
+            print("FanController: Manual mode reapplied at \(manualSpeed) RPM")
         case .automatic:
+            enableManualMode() // Enable control first
             startAutoControl()
+            // Force immediate speed application based on last known speed or a safe default
+            let safeSpeed = lastAppliedSpeed > 0 ? lastAppliedSpeed : 3000
+            applyFanSpeed(safeSpeed)
+            print("FanController: Auto mode reapplied, initial speed: \(safeSpeed) RPM")
         }
     }
     
