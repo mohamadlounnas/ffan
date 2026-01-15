@@ -7,7 +7,7 @@ A lightweight menu bar app for monitoring CPU/GPU temperatures and controlling f
 
 ## Download
 
-[**Download Latest Version (v1.2.4)**](https://github.com/mohamadlounnas/ffan/releases/latest)
+[**Download Latest Version (v1.3.0)**](https://github.com/mohamadlounnas/ffan/releases/latest)
 
 **Quick Start:**
 1. Download the DMG from the link above

@@ -13,6 +13,7 @@ struct PopoverView: View {
     @ObservedObject var permissions = PermissionsManager.shared
     @ObservedObject var battery = BatteryMonitor.shared
     @State private var showingQuitConfirm = false
+    @State private var showingSettings = false
     @State private var installError: String?
     
     var body: some View {
@@ -93,6 +94,9 @@ struct PopoverView: View {
         } message: {
             Text("Fans will be set to automatic mode before quitting.")
         }
+        .sheet(isPresented: $showingSettings) {
+            SettingsView(viewModel: viewModel)
+        }
     }
     
     // MARK: - Header
@@ -127,6 +131,17 @@ struct PopoverView: View {
             }
             
             Spacer()
+            
+            // Settings button
+            Button(action: {
+                showingSettings = true
+            }) {
+                Image(systemName: "gearshape.fill")
+                    .font(.system(size: 20))
+                    .foregroundColor(.secondary.opacity(0.6))
+            }
+            .buttonStyle(.plain)
+            .help("Settings")
             
             // Quit button (top right)
             Button(action: {

@@ -2,6 +2,21 @@
 
 All notable changes to ffan will be documented in this file.
 
+## [1.3.0] - 2026-01-16
+
+### Added
+- **Settings Window**: New comprehensive settings panel accessible from the menu bar popover
+- **Status Bar Display Modes**: Choose what to display in menu bar (None, Temperature, Power Usage, Fan Speed %)
+- **High Temperature Alerts**: Configurable temperature threshold with system notifications
+- **Auto Mode Switching**: Automatically switch to automatic control when temperatures exceed threshold
+- **Monitoring Interval Control**: Adjustable refresh rate for temperature monitoring (0.5-5.0 seconds)
+- **Launch at Login Toggle**: Easy enable/disable in settings UI
+
+### Improved
+- Settings UI with liquid glass design matching app aesthetics
+- Real-time settings application without restart
+- Better organization of app preferences
+
 ## [1.2.4] - 2026-01-16
 
 ### Fixed

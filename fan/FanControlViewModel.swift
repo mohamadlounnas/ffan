@@ -39,6 +39,12 @@ class FanControlViewModel: ObservableObject {
     @Published var launchAtLogin = false
     @Published var lastWriteSuccess = false
     
+    // Settings
+    @Published var statusBarDisplayMode: String = "temperature"
+    @Published var enableNotifications = true
+    @Published var highTempAlert: Double = 85.0
+    @Published var autoSwitchMode = false
+    
     // Demo mode
     @Published var isDemoMode = false
     
@@ -50,8 +56,50 @@ class FanControlViewModel: ObservableObject {
         self.fanController = FanController(systemMonitor: systemMonitor)
         self.launchAtLogin = LaunchAtLoginManager.shared.isEnabled
         self.isDemoMode = UserDefaults.standard.bool(forKey: "showDemoData")
+        
+        // Load settings from UserDefaults
+        self.statusBarDisplayMode = UserDefaults.standard.string(forKey: "statusBarDisplayMode") ?? "temperature"
+        self.enableNotifications = UserDefaults.standard.object(forKey: "enableNotifications") as? Bool ?? true
+        self.highTempAlert = UserDefaults.standard.double(forKey: "highTempAlert") > 0 ? UserDefaults.standard.double(forKey: "highTempAlert") : 85.0
+        self.autoSwitchMode = UserDefaults.standard.object(forKey: "autoSwitchMode") as? Bool ?? false
+        
         setupBindings()
+        setupSettingsObservers()
         setupSleepWakeNotifications()
+    }
+    
+    private func setupSettingsObservers() {
+        // Observe high temp alert for notifications
+        $highTempAlert
+            .sink { [weak self] temp in
+                guard let self = self else { return }
+                if self.enableNotifications, let cpuTemp = self.cpuTemperature, cpuTemp > temp {
+                    self.showHighTempNotification(cpuTemp)
+                }
+            }
+            .store(in: &cancellables)
+        
+        // Observe auto switch mode for automatic mode activation
+        $cpuTemperature
+            .sink { [weak self] temp in
+                guard let self = self else { return }
+                if self.autoSwitchMode, let cpuTemp = temp, cpuTemp > self.highTempAlert {
+                    if self.controlMode != .automatic {
+                        print("Auto-switching to automatic mode due to high temperature: \(cpuTemp)°C")
+                        self.setControlMode(.automatic)
+                    }
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func showHighTempNotification(_ temperature: Double) {
+        let notification = NSUserNotification()
+        notification.title = "High Temperature Alert"
+        notification.subtitle = String(format: "CPU temperature: %.1f°C", temperature)
+        notification.informativeText = "Consider switching to automatic fan control or check your system."
+        notification.soundName = NSUserNotificationDefaultSoundName
+        NSUserNotificationCenter.default.deliver(notification)
     }
     
     private func setupBindings() {

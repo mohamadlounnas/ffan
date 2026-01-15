@@ -93,6 +93,45 @@ class UserDefaultsManager {
         }
     }
     
+    // MARK: - UI Settings
+    
+    var statusBarDisplayMode: String {
+        get {
+            return defaults.string(forKey: "statusBarDisplayMode") ?? "temperature"
+        }
+        set {
+            defaults.set(newValue, forKey: "statusBarDisplayMode")
+        }
+    }
+    
+    var enableNotifications: Bool {
+        get {
+            return defaults.object(forKey: "enableNotifications") as? Bool ?? true
+        }
+        set {
+            defaults.set(newValue, forKey: "enableNotifications")
+        }
+    }
+    
+    var highTempAlert: Double {
+        get {
+            let temp = defaults.double(forKey: "highTempAlert")
+            return temp > 0 ? temp : 85.0
+        }
+        set {
+            defaults.set(newValue, forKey: "highTempAlert")
+        }
+    }
+    
+    var autoSwitchMode: Bool {
+        get {
+            return defaults.object(forKey: "autoSwitchMode") as? Bool ?? false
+        }
+        set {
+            defaults.set(newValue, forKey: "autoSwitchMode")
+        }
+    }
+    
     // MARK: - Helper Methods
     
     func resetToDefaults() {
@@ -103,5 +142,9 @@ class UserDefaultsManager {
         defaults.removeObject(forKey: "launchAtLogin")
         defaults.removeObject(forKey: "useCelsius")
         defaults.removeObject(forKey: "monitoringInterval")
+        defaults.removeObject(forKey: "statusBarDisplayMode")
+        defaults.removeObject(forKey: "enableNotifications")
+        defaults.removeObject(forKey: "highTempAlert")
+        defaults.removeObject(forKey: "autoSwitchMode")
     }
 }
