@@ -146,7 +146,7 @@ class FanControlViewModel: ObservableObject {
             object: nil
         )
         
-        // Register for screen lock notification
+        // Register for screen lock notification (screen saver/display sleep)
         NSWorkspace.shared.notificationCenter.addObserver(
             self,
             selector: #selector(systemWillSleep),
@@ -154,11 +154,27 @@ class FanControlViewModel: ObservableObject {
             object: nil
         )
         
-        // Register for screen unlock notification
+        // Register for screen wake notification
         NSWorkspace.shared.notificationCenter.addObserver(
             self,
             selector: #selector(systemDidWake),
             name: NSWorkspace.screensDidWakeNotification,
+            object: nil
+        )
+        
+        // Register for session unlock notification (user logged back in)
+        DistributedNotificationCenter.default().addObserver(
+            self,
+            selector: #selector(systemDidWake),
+            name: NSNotification.Name("com.apple.screenIsUnlocked"),
+            object: nil
+        )
+        
+        // Also register for session active notification
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self,
+            selector: #selector(systemDidWake),
+            name: NSWorkspace.sessionDidBecomeActiveNotification,
             object: nil
         )
     }
