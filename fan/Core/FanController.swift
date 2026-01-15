@@ -43,10 +43,16 @@ class FanController: ObservableObject {
         self.systemMonitor = systemMonitor
         loadSettings()
         
-        // Apply initial settings after a brief delay to let system stabilize
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            self?.applyInitialSettings()
-        }
+        // Observe fan detection and apply settings when ready
+        systemMonitor.$numberOfFans
+            .receive(on: DispatchQueue.main)
+            .filter { $0 > 0 }
+            .first()
+            .sink { [weak self] _ in
+                print("FanController: Fans detected, applying initial settings")
+                self?.applyInitialSettings()
+            }
+            .store(in: &cancellables)
     }
     
     deinit {
@@ -68,6 +74,15 @@ class FanController: ObservableObject {
     
     func reapplySettings() {
         print("FanController: Reapplying settings after wake - mode: \(mode)")
+        
+        // Check if fans are detected, retry if not
+        guard let monitor = systemMonitor, monitor.numberOfFans > 0 else {
+            print("FanController: No fans detected yet, retrying in 2 seconds...")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+                self?.reapplySettings()
+            }
+            return
+        }
         
         switch mode {
         case .manual:
