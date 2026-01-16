@@ -69,6 +69,14 @@ class FanControlViewModel: ObservableObject {
     }
     
     private func setupSettingsObservers() {
+        // Observe status bar display mode changes
+        $statusBarDisplayMode
+            .sink { [weak self] mode in
+                // Update status bar manager with new display mode
+                // This will be accessed via AppDelegate reference if available
+            }
+            .store(in: &cancellables)
+        
         // Observe high temp alert for notifications
         $highTempAlert
             .sink { [weak self] temp in

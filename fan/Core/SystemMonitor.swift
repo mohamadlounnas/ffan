@@ -217,6 +217,12 @@ class SystemMonitor: ObservableObject {
         let result = IOConnectCallStructMethod(smcConnection, KERNEL_INDEX_SMC, &input, MemoryLayout<SMCParamStruct>.size, &output, &outputSize)
         
         if result == kIOReturnSuccess && output.result == 0 {
+            // Validate dataSize to avoid corrupt/out-of-range values
+            let dataSize = output.keyInfo.dataSize
+            if dataSize == 0 || dataSize > 32 {
+                print("SMC: Invalid dataSize (\(dataSize)) for key \(key)")
+                return nil
+            }
             keyInfoCache[keyCode] = output.keyInfo
             return stringFrom(fourCharCode: output.keyInfo.dataType).trimmingCharacters(in: .whitespaces)
         }
@@ -482,6 +488,11 @@ class SystemMonitor: ObservableObject {
             }
             
             keyInfo = output.keyInfo
+            // Validate keyInfo.dataSize
+            if keyInfo.dataSize == 0 || keyInfo.dataSize > 32 {
+                print("SMC: Invalid keyInfo.dataSize (\(keyInfo.dataSize)) for key \(key)")
+                return nil
+            }
             keyInfoCache[keyCode] = keyInfo
         }
         
@@ -505,6 +516,12 @@ class SystemMonitor: ObservableObject {
         )
         
         if result != kIOReturnSuccess || output.result != 0 {
+            return nil
+        }
+        
+        // Validate data size before parsing
+        if keyInfo.dataSize == 0 || keyInfo.dataSize > 32 {
+            print("SMC: Invalid read size \(keyInfo.dataSize) for key \(key)")
             return nil
         }
         

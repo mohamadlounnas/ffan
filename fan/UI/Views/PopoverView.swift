@@ -12,8 +12,10 @@ struct PopoverView: View {
     @ObservedObject var viewModel: FanControlViewModel
     @ObservedObject var permissions = PermissionsManager.shared
     @ObservedObject var battery = BatteryMonitor.shared
+    var statusBarManager: StatusBarManager?
     @State private var showingQuitConfirm = false
     @State private var showingSettings = false
+    @Environment(\.openWindow) var openWindow
     @State private var installError: String?
     
     var body: some View {
@@ -94,9 +96,6 @@ struct PopoverView: View {
         } message: {
             Text("Fans will be set to automatic mode before quitting.")
         }
-        .sheet(isPresented: $showingSettings) {
-            SettingsView(viewModel: viewModel)
-        }
     }
     
     // MARK: - Header
@@ -134,7 +133,7 @@ struct PopoverView: View {
             
             // Settings button
             Button(action: {
-                showingSettings = true
+                openWindow(id: "settings")
             }) {
                 Image(systemName: "gearshape.fill")
                     .font(.system(size: 20))
@@ -708,7 +707,9 @@ struct PowerCardView: View {
                         .fill(Color.gray.opacity(0.2))
                         .frame(height: 4)
                     
-                    if let power = powerWatts, power > 0 {
+                    if let power = powerWatts, power > 0, geo.size.width > 0 {
+                        let progress = min(1, power / 50.0)
+                        let calculatedWidth = max(0, geo.size.width * progress)
                         RoundedRectangle(cornerRadius: 2)
                             .fill(
                                 LinearGradient(
@@ -717,7 +718,7 @@ struct PowerCardView: View {
                                     endPoint: .trailing
                                 )
                             )
-                            .frame(width: geo.size.width * min(1, power / 50.0), height: 4)
+                            .frame(width: calculatedWidth, height: 4)
                             .animation(.easeInOut(duration: 0.3), value: power)
                     }
                 }

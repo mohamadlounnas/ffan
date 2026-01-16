@@ -91,7 +91,9 @@ struct TemperatureView: View {
                         .frame(height: 4)
                     
                     // Progress
-                    if let temp = temperature {
+                    if let temp = temperature, geo.size.width > 0 {
+                        let progress = min(1, max(0, (temp - 30) / 70))
+                        let calculatedWidth = max(0, geo.size.width * progress)
                         RoundedRectangle(cornerRadius: 2)
                             .fill(
                                 LinearGradient(
@@ -100,7 +102,7 @@ struct TemperatureView: View {
                                     endPoint: .trailing
                                 )
                             )
-                            .frame(width: geo.size.width * min(1, max(0, (temp - 30) / 70)), height: 4)
+                            .frame(width: calculatedWidth, height: 4)
                             .animation(.easeInOut(duration: 0.3), value: temp)
                     }
                 }
