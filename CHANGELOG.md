@@ -17,6 +17,15 @@ All notable changes to ffan will be documented in this file.
 - Real-time settings application without restart
 - Better organization of app preferences
 
+### Fixed
+- **Status bar display crash**: Fixed crash caused by invalid SMC data parsing ("Negative value is not representable"). Added validation to SMC reads to avoid corrupt sizes.
+- **Status bar dynamic text**: Rewrote `StatusBarManager` to properly render dynamic text and animation; fixed issues where Power Usage display wasn't updating.
+
+### Improved
+- **Status bar compactness**: Shortened and compacted menu bar text, added compact font and option to show image-only for minimal footprint.
+- **Power Usage display**: Shows battery power in Watts (`W`) when available, falls back to fan speed percentage when not available.
+- **Robustness**: Improved SMC parsing and added defensive checks to prevent crashes and layout errors.
+
 ## [1.2.4] - 2026-01-16
 
 ### Fixed

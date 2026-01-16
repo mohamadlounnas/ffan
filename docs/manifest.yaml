@@ -22,7 +22,7 @@ documentation:
       - "Security Considerations"
       - "Contributing Guidelines"
       - "FAQ & Troubleshooting"
-    last_updated: "2026-01-12"
+    last_updated: "2026-01-16"
 
   - file: "index.html"
     title: "Landing Page"
@@ -33,7 +33,7 @@ documentation:
       - "Hero"
       - "Features"
       - "Installation"
-    last_updated: "2026-01-12"
+    last_updated: "2026-01-16"
 
 planned:
   - file: "smc-protocol.md"
